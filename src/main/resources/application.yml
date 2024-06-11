@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: nperest
+
+  #MyBatis
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://43.200.169.128:3306/test?serverTimezone=Asia/Seoul
+    username: mysql
+    password: 1234
+
+  #multipart
+  servlet:
+    multipart:
+      enabled: true
+      max-request-size: 40MB
+      max-file-size: 40MB
+      file-size-threshold: 100MB
+
+mybatis:
+  config-location: classpath:/config/config.xml
+  mapper-locations: classpath*:/mapper/*.xml
+
+server:
+  port: 10000
