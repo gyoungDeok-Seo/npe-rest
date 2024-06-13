@@ -8,11 +8,13 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 @ApiModel(description = "회원 정보")
 @Component
 @Getter @Setter @ToString(callSuper = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class MemberVO extends Period {
+public class MemberVO extends Period implements Serializable {
     @EqualsAndHashCode.Include
     private Long id;
     @ApiModelProperty(value="회원 카카오 이메일", example = "test@gmail.com", required = true)
