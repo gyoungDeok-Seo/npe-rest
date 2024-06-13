@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.nperest.mapper.MemberMapper">
+    <insert id="insert">
+        insert into tbl_member(kakao_profile_url, kakao_email, member_name, member_position, member_intro)
+        values (#{kakaoProfileUrl}, #{kakaoEmail}, #{memberName}, #{memberPosition}, #{memberIntro})
+    </insert>
 
+    <select id="select" resultType="memberVO">
+        select id,
+               created_date,
+               updated_date,
+               kakao_profile_url,
+               kakao_email,
+               member_name,
+               member_position,
+               member_intro,
+               status
+        from tbl_member
+        where kakao_email=#{kakaoEmail}
+    </select>
+
+    <update id="updateKakaoProfileUrl">
+        update tbl_member
+        set updated_date=current_timestamp, kakao_profile_url=#{kakaoProfileUrl}
+        where id=#{id}
+    </update>
 </mapper>

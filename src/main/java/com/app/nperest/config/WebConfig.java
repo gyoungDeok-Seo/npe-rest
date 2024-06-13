@@ -14,6 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 // allowedOriginPatterns 메소드는 지정된 패턴과 일치하는 출처(도메인)에서 오는 요청을 허용
                 // "http://*:3000"은 HTTP 프로토콜을 사용하는 모든 도메인의 3000번 포트를 통해 오는 요청을 허용
+//                .allowedOriginPatterns("http://*:3000")
                 .allowedOriginPatterns("http://*:3000")
                 // 모든 HTTP 메소드 (GET, POST, PUT, DELETE 등)의 요청을 허용
                 .allowedMethods("*")

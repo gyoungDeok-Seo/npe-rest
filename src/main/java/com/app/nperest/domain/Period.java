@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter @ToString
 public class Period {
-    protected String createdAt;
-    protected String updatedAt;
+    protected String createdDate;
+    protected String updatedDate;
 }

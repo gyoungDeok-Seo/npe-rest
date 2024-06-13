@@ -5,7 +5,7 @@ spring:
   #MyBatis
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://43.200.169.128:3306/test?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://43.200.169.128:3306/npe?serverTimezone=Asia/Seoul
     username: mysql
     password: 1234
 
