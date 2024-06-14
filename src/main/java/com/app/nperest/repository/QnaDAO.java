@@ -1,7 +1,8 @@
 package com.app.nperest.repository;
 
-import com.app.nperest.domain.FileDTO;
+import com.app.nperest.domain.FileVO;
 import com.app.nperest.domain.QnaDTO;
+import com.app.nperest.domain.TagVO;
 import com.app.nperest.mapper.QnaMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -11,11 +12,15 @@ import org.springframework.stereotype.Repository;
 public class QnaDAO {
     private final QnaMapper qnaMapper;
 
-    public int insertQna(QnaDTO qnaDTO) {
-        return qnaMapper.insertQna(qnaDTO);
+    public void insertQna(QnaDTO qnaDTO) {
+        ;
     }
 
-    public int insertFile(FileDTO fileDTO) {
-        return qnaMapper.insertFile(fileDTO);
+    public void insertFile(FileVO fileVO) {
+        ;
+    }
+
+    public void insertTag(TagVO tagVO) {
+        ;
     }
 }

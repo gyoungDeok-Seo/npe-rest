@@ -12,11 +12,12 @@ import java.util.List;
 @Setter
 @ToString(callSuper = true)
 public class QnaDTO extends Period {
-    private int id;
+    private Long id;
     private String questionTitle;
     private String questionContent;
     private boolean status;
     private Long categoryId;
     private Long memberId;
-    private List<FileDTO> files;
+    private List<FileVO> files;
+    private List<TagVO> tags;
 }

@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class FileDTO {
+public class TagVO {
     private Long id;
+    private String tagName;
+    private boolean status;
     private Long questionId;
-    private String fileName;
-    private String filePath;
 }

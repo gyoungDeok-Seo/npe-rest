@@ -9,6 +9,6 @@
         <typeAlias type="com.app.nperest.domain.QnaVO" alias="qnaVO"/>
         <typeAlias type="com.app.nperest.domain.FileVO" alias="fileVO"/>
         <typeAlias type="com.app.nperest.domain.QnaDTO" alias="qnaDTO"/>
-        <typeAlias type="com.app.nperest.domain.FileDTO" alias="fileDTO"/>
+         <typeAlias type="com.app.nperest.domain.TagVO" alias="tagVO"/>
     </typeAliases>
 </configuration>

@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 @Setter
 @ToString(callSuper = true)
 public class FileVO extends Period {
-    private int id;
+    private Long id;
     private String fileName;
     private String filePath;
-    private boolean questionId;
+    private Long questionId;
 }
