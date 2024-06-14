@@ -6,5 +6,7 @@
     </settings>
     <typeAliases>
         <typeAlias type="com.app.nperest.domain.MemberVO" alias="memberVO"/>
+        <typeAlias type="com.app.nperest.domain.SkillVO" alias="skillVO"/>
+        <typeAlias type="com.app.nperest.domain.MemberSkillDTO" alias="memberSkillDTO"/>
     </typeAliases>
 </configuration>

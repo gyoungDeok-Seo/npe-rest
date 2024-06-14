@@ -236,3 +236,5 @@ create table tbl_alarm
 );
 
 select * from tbl_member;
+select * from tbl_skill;
+select * from tbl_member_skill;

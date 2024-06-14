@@ -20,6 +20,13 @@
         where kakao_email=#{kakaoEmail}
     </select>
 
+    <select id="selectMemberSkill" resultType="memberSkillDTO">
+        select mk.id, member_id, skill_id, skill_name from tbl_member m
+        join tbl_member_skill mk on  m.id = mk.member_id
+        join tbl_skill s on mk.skill_id = s.id
+        where m.kakao_email = #{kakaoEmail}
+    </select>
+
     <update id="updateKakaoProfileUrl">
         update tbl_member
         set updated_date=current_timestamp, kakao_profile_url=#{kakaoProfileUrl}
