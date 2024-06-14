@@ -45,7 +45,6 @@ public class KakaoAPI {
             memberService.join(foundInfo.get());
             MemberVO memberVO = memberService.getMember(foundInfo.get().getKakaoEmail()).get();
             session.setAttribute("member", memberVO);
-            System.out.println("Session set: " + session.getAttribute("member")); // 세션에 회원 정보 설정 로그
         }
         return new RedirectView("http://localhost:3000/");
     }

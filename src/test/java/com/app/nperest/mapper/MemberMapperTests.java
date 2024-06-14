@@ -1,11 +1,13 @@
 package com.app.nperest.mapper;
 
+import com.app.nperest.domain.MemberSkillDTO;
 import com.app.nperest.domain.MemberVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -32,5 +34,23 @@ public class MemberMapperTests {
         Optional<MemberVO> member = memberMapper.select(kakaoEmail);
 
         log.info("member: {}", member);
+    }
+
+    @Test
+    public void updateKakaoProfileUrlTest() {
+        MemberVO memberVO = new MemberVO();
+        memberVO.setId(1L);
+        memberVO.setKakaoProfileUrl("변경된 url");
+        memberMapper.updateKakaoProfileUrl(memberVO);
+    }
+
+    @Test
+    public void selectMemberSkillTest(){
+        List<MemberSkillDTO> memberSkills = memberMapper.selectMemberSkill("dlfjs158@nate.com");
+        if(memberSkills.isEmpty()){
+            log.info("비었다");
+        } else {
+            log.info("MemberSkillDTO: {}", memberSkills);
+        }
     }
 }

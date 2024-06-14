@@ -1,11 +1,13 @@
 package com.app.nperest.service;
 
+import com.app.nperest.domain.MemberSkillDTO;
 import com.app.nperest.domain.MemberVO;
 import com.app.nperest.repository.MemberDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -42,5 +44,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void updateKakaoProfileUrl(MemberVO memberVO){
         memberDAO.updateKakaoProfileUrl(memberVO);
+    };
+//    회원 기술 조회
+    @Override
+    public List<MemberSkillDTO> getMemberSkill(String kakaoEmail){
+        return memberDAO.findByKakaoEmailForMemberSkill(kakaoEmail);
     };
 }
