@@ -1,9 +1,6 @@
 package com.app.nperest.repository;
 
-import com.app.nperest.domain.MemberSkillDTO;
-import com.app.nperest.domain.MemberVO;
-import com.app.nperest.domain.Search;
-import com.app.nperest.domain.SkillVO;
+import com.app.nperest.domain.*;
 import com.app.nperest.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -46,5 +43,49 @@ public class MemberDAO {
 //    회원 기술 삭제
     public void dropMemberSkill(MemberSkillDTO memberSkillDTO){
         memberMapper.deleteMemberSkill(memberSkillDTO);
+    };
+//    회원 질문 조회
+    public List<MyQuestionDTO> findMyQuestions(Long memberId, Pagination pagination){
+        return memberMapper.selectMyQuestions(memberId, pagination);
+    };
+//    회원 총 질문 수 조회
+    public int countMyQuestions(Long memberId){
+        return memberMapper.countMyQuestions(memberId);
+    };
+//    질문에 대한 총 답변 수 조회
+    public int countAnswerCountForQuestion(Long questionId){
+        return memberMapper.countAnswerCountForQuestion(questionId);
+    };
+//    답변에 대한 총 댓글 수 조회
+    public int answerReplyCountForQuestion(Long memberId, Long questionId){
+        return memberMapper.answerReplyCountForQuestion(memberId, questionId);
+    };
+//    회원 질문 조회
+    public List<MyAnswerDTO> findMyAnswer(Long memberId, Pagination pagination){
+        return memberMapper.selectMyAnswer(memberId, pagination);
+    };
+//    회원이 작성한 답글에 대한 좋아요 수 조회
+    public int answerLikeCount(Long memberId, Long answerId){
+        return memberMapper.answerLikeCount(memberId, answerId);
+    };
+//    회원이 작성한 답글에 대한 댓글 수 조회
+    public int answerReplyCount(Long memberId, Long answerId){
+        return memberMapper.answerReplyCount(memberId, answerId);
+    };
+//    회원이 작성한 답글의 전체 수 조회
+    public int countMyAnswer(Long memberId){
+        return memberMapper.countMyAnswer(memberId);
+    };
+//    답글에 대한 회원의 좋아요 조회
+    public Optional<AnswerLikeVO> findAnswerLike(Long memberId, Long answerId){
+        return memberMapper.selectAnswerLike(memberId, answerId);
+    };
+//    답글에 대한 회원의 좋아요 수정
+    public void updateAnswerLike(AnswerLikeVO answerLikeVO){
+        memberMapper.updateAnswerLike(answerLikeVO);
+    };
+//    답글에 대한 회원의 좋아요 생성
+    public void saveAnswerLike(AnswerLikeVO answerLikeVO){
+        memberMapper.insertAnswerLike(answerLikeVO);
     };
 }

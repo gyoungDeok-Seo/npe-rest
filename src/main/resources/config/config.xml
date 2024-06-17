@@ -17,5 +17,8 @@
         <typeAlias type="com.app.nperest.domain.TagVO" alias="tagVO"/>
         <typeAlias type="com.app.nperest.domain.SkillVO" alias="skillVO"/>
         <typeAlias type="com.app.nperest.domain.MemberSkillDTO" alias="memberSkillDTO"/>
+        <typeAlias type="com.app.nperest.domain.MyQuestionDTO" alias="myQuestionDTO"/>
+        <typeAlias type="com.app.nperest.domain.MyAnswerDTO" alias="myAnswerDTO"/>
+        <typeAlias type="com.app.nperest.domain.AnswerLikeVO" alias="answerLikeVO"/>
     </typeAliases>
 </configuration>
