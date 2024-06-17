@@ -1,9 +1,9 @@
 package com.app.nperest.mapper;
 
-import com.app.nperest.domain.FileVO;
-import com.app.nperest.domain.QnaDTO;
-import com.app.nperest.domain.TagVO;
+import com.app.nperest.domain.*;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface QnaMapper {
@@ -12,4 +12,8 @@ public interface QnaMapper {
     public void insertFile(FileVO fileVO);
 
     public void insertTag(TagVO tagVO);
+
+    public List<QnaDTO> selectList(QnaDTO qnaDTO);
+
+    public QnaDetailDTO selectDetail(QnaDetailDTO qnaDetailDTO);
 }

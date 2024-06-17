@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Setter
 @ToString(callSuper = true)
 public class QnaVO extends Period {
-    private int id;
+    private Long id;
     private String questionTitle;
     private String questionContent;
     private boolean status;
