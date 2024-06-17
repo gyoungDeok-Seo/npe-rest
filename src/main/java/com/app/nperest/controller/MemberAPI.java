@@ -1,10 +1,10 @@
 package com.app.nperest.controller;
 
-import com.app.nperest.domain.MemberSkillDTO;
-import com.app.nperest.domain.MemberVO;
+import com.app.nperest.domain.*;
 import com.app.nperest.service.MemberService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -40,6 +40,15 @@ public class MemberAPI {
         return new RedirectView("/members/api/session");
     }
 
+    @PatchMapping("/member-info/modify")
+    public void modifyMemberInfo(@RequestBody MemberVO memberVO, HttpSession session){
+        MemberVO member = (MemberVO) session.getAttribute("member");
+        member.setMemberName(memberVO.getMemberName());
+        member.setMemberPosition(memberVO.getMemberPosition());
+        member.setMemberIntro(memberVO.getMemberIntro());
+        memberService.modifyMemberInfo(member);
+    }
+
     @GetMapping("/skill")
     public List<MemberSkillDTO> getMemberSkill(HttpSession session){
         MemberVO member = (MemberVO) session.getAttribute("member");
@@ -47,4 +56,33 @@ public class MemberAPI {
 
         return memberService.getMemberSkill(kakaoEmail);
     }
+
+    @PostMapping("/skill")
+    public void modifyMemberSkill(@RequestBody SkillModifyInfo skillModifyInfo, HttpSession session){
+        MemberSkillDTO memberSkillDTO = new MemberSkillDTO();
+        MemberVO member = (MemberVO) session.getAttribute("member");
+
+        for (SkillVO skillVO: skillModifyInfo.getAddList()){
+            memberSkillDTO.setMemberId(member.getId());
+            memberSkillDTO.setSkillId(skillVO.getId());
+            memberService.saveMemberSkill(memberSkillDTO);
+        }
+
+        for (SkillVO skillVO: skillModifyInfo.getRemoveList()){
+            memberSkillDTO.setMemberId(member.getId());
+            memberSkillDTO.setSkillId(skillVO.getId());
+            memberService.dropMemberSkill(memberSkillDTO);
+        }
+    }
+
+    @GetMapping("/skillSearch")
+    public List<SkillVO> getSkillSearch(@RequestParam String keyword){
+        Search search = new Search();
+        search.setKeyword(keyword);
+
+        return memberService.getSearchSkillList(search);
+    }
+
+//    @GetMapping("/question")
+//    public List<QuestionVO>
 }

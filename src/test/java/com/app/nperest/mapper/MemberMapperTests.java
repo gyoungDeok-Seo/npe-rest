@@ -2,6 +2,8 @@ package com.app.nperest.mapper;
 
 import com.app.nperest.domain.MemberSkillDTO;
 import com.app.nperest.domain.MemberVO;
+import com.app.nperest.domain.Search;
+import com.app.nperest.domain.SkillVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,19 @@ public class MemberMapperTests {
             log.info("비었다");
         } else {
             log.info("MemberSkillDTO: {}", memberSkills);
+        }
+    }
+
+    @Test
+    public void selectSearchSkillTest(){
+        Search search = new Search();
+        search.setKeyword("j");
+
+        List<SkillVO> searchSkills = memberMapper.selectSearchSkill(search);
+        if(searchSkills.isEmpty()){
+            log.info("비었다");
+        } else {
+            log.info("SkillVO: {}", searchSkills);
         }
     }
 }

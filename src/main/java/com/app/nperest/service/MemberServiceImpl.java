@@ -2,10 +2,13 @@ package com.app.nperest.service;
 
 import com.app.nperest.domain.MemberSkillDTO;
 import com.app.nperest.domain.MemberVO;
+import com.app.nperest.domain.Search;
+import com.app.nperest.domain.SkillVO;
 import com.app.nperest.repository.MemberDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -13,6 +16,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 @Primary
 public class MemberServiceImpl implements MemberService {
     private final MemberDAO memberDAO;
@@ -45,9 +49,28 @@ public class MemberServiceImpl implements MemberService {
     public void updateKakaoProfileUrl(MemberVO memberVO){
         memberDAO.updateKakaoProfileUrl(memberVO);
     };
+//    회원 정보 수정
+    public void modifyMemberInfo(MemberVO memberVO){
+        memberDAO.updateMemberInfo(memberVO);
+    };
 //    회원 기술 조회
     @Override
     public List<MemberSkillDTO> getMemberSkill(String kakaoEmail){
         return memberDAO.findByKakaoEmailForMemberSkill(kakaoEmail);
+    };
+//    기술 검색
+    @Override
+    public List<SkillVO> getSearchSkillList(Search search){
+        return memberDAO.findByKeywordForSearchSkill(search);
+    };
+//    회원 기술 추가
+    @Override
+    public void saveMemberSkill(MemberSkillDTO memberSkillDTO){
+        memberDAO.saveMemberSkill(memberSkillDTO);
+    };
+//    회원 기술 삭제
+    @Override
+    public void dropMemberSkill(MemberSkillDTO memberSkillDTO){
+        memberDAO.dropMemberSkill(memberSkillDTO);
     };
 }

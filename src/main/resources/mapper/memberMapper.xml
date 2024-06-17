@@ -6,6 +6,11 @@
         values (#{kakaoProfileUrl}, #{kakaoEmail}, #{memberName}, #{memberPosition}, #{memberIntro})
     </insert>
 
+    <insert id="insertMemberSkill">
+        insert into tbl_member_skill(member_id, skill_id)
+        values (#{memberId}, #{skillId})
+    </insert>
+
     <select id="select" resultType="memberVO">
         select id,
                created_date,
@@ -27,9 +32,27 @@
         where m.kakao_email = #{kakaoEmail}
     </select>
 
+    <select id="selectSearchSkill" resultType="skillVO">
+        select id, skill_name from tbl_skill
+        where skill_name like concat('%', #{keyword}, '%')
+        order by skill_name
+    </select>
+
     <update id="updateKakaoProfileUrl">
         update tbl_member
         set updated_date=current_timestamp, kakao_profile_url=#{kakaoProfileUrl}
         where id=#{id}
     </update>
+
+    <update id="updateMemberInfo">
+        update tbl_member
+        set updated_date=current_timestamp, member_name = #{memberName}, member_position = #{memberPosition}, member_intro = #{memberIntro}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMemberSkill">
+        delete from tbl_member_skill
+        where member_id = #{memberId} and skill_id = #{skillId}
+    </delete>
+
 </mapper>

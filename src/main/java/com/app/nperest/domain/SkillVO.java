@@ -18,6 +18,5 @@ import java.io.Serializable;
 public class SkillVO extends Period implements Serializable {
     @EqualsAndHashCode.Include
     private Long id;
-    private Long MemberId;
-    private Long SkillId;
+    private String skillName;
 }
