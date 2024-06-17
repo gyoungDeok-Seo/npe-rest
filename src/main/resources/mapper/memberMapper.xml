@@ -6,6 +6,16 @@
         values (#{kakaoProfileUrl}, #{kakaoEmail}, #{memberName}, #{memberPosition}, #{memberIntro})
     </insert>
 
+    <insert id="insertMemberSkill">
+        insert into tbl_member_skill(member_id, skill_id)
+        values (#{memberId}, #{skillId})
+    </insert>
+
+    <insert id="insertAnswerLike">
+        insert into tbl_answer_like(member_id, answer_id)
+        values (#{memberId}, #{answerId})
+    </insert>
+
     <select id="select" resultType="memberVO">
         select id,
                created_date,
@@ -27,9 +37,92 @@
         where m.kakao_email = #{kakaoEmail}
     </select>
 
+    <select id="selectSearchSkill" resultType="skillVO">
+        select id, skill_name from tbl_skill
+        where skill_name like concat('%', #{keyword}, '%')
+        order by skill_name
+    </select>
+
+    <select id="selectMyQuestions" resultType="myQuestionDTO">
+        select id, created_date, updated_date, question_title, question_content, status, member_id, category_id from tbl_question
+        where member_id = #{memberId} and status = 1
+        order by id desc
+        limit #{pagination.rowCount}
+        offset #{pagination.startRow}
+    </select>
+
+    <select id="countMyQuestions" resultType="int">
+        select count(id) from tbl_question q
+        where member_id = #{memberId} and status = 1
+    </select>
+
+    <select id="countAnswerCountForQuestion" resultType="int">
+        select count(id)
+        from tbl_answer
+        where question_id = #{questionId} and status = 1
+    </select>
+
+    <select id="answerReplyCountForQuestion" resultType="int">
+        select count(ar.id)
+        from tbl_question q
+        join tbl_answer a on q.id = a.question_id
+        join tbl_answer_reply ar on a.id = ar.answer_id
+        where q.id = #{questionId} and q.member_id = #{memberId} and q.status = 1 and a.status = 1 and ar.status = 1
+    </select>
+
+    <select id="selectMyAnswer" resultType="myAnswerDTO">
+        select a.id, a.created_date, a.updated_date, question_title, question_content, answer_content, a.status, a.member_id, question_id from tbl_question q
+        join tbl_answer a on q.id = a.question_id and q.status =1
+        where a.member_id = #{memberId} and a.status = 1
+        order by id desc
+        limit #{pagination.rowCount}
+        offset #{pagination.startRow}
+    </select>
+
+    <select id="answerLikeCount" resultType="int">
+        select count(al.id) from tbl_answer a
+        join tbl_answer_like al on a.id = al.answer_id
+        where a.id = #{answerId} and a.member_id = #{memberId} and a.status = 1 and al.status = 1
+    </select>
+
+    <select id="answerReplyCount" resultType="int">
+        select count(ar.id) from tbl_answer a
+        join tbl_answer_reply ar on a.id = ar.answer_id
+        where a.id = #{answerId} and a.member_id = #{memberId} and a.status = 1 and ar.status = 1
+    </select>
+
+    <select id="countMyAnswer" resultType="int">
+        select count(a.id) from tbl_question q
+        join tbl_answer a on q.id = a.question_id
+        where a.member_id = #{memberId} and a.status = 1 and q.status = 1
+    </select>
+
+    <select id="selectAnswerLike" resultType="answerLikeVO">
+        select id, status, member_id, answer_id from tbl_answer_like
+        where member_id = #{memberId} and answer_id = #{answerId}
+    </select>
+
     <update id="updateKakaoProfileUrl">
         update tbl_member
         set updated_date=current_timestamp, kakao_profile_url=#{kakaoProfileUrl}
         where id=#{id}
     </update>
+
+    <update id="updateMemberInfo">
+        update tbl_member
+        set updated_date = current_timestamp, member_name = #{memberName}, member_position = #{memberPosition}, member_intro = #{memberIntro}
+        where id = #{id}
+    </update>
+
+    <update id="updateAnswerLike">
+        update tbl_answer_like
+        set status = #{status}, updated_date = now()
+        where member_id = #{memberId} and answer_id = #{answerId}
+    </update>
+
+    <delete id="deleteMemberSkill">
+        delete from tbl_member_skill
+        where member_id = #{memberId} and skill_id = #{skillId}
+    </delete>
+
 </mapper>

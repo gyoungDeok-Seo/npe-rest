@@ -15,8 +15,9 @@ import java.io.Serializable;
 @Setter
 @ToString(callSuper = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class SkillVO extends Period implements Serializable {
-    @EqualsAndHashCode.Include
+public class AnswerLikeVO extends Period implements Serializable {
     private Long id;
-    private String skillName;
+    private boolean status;
+    private Long memberId;
+    private Long answerId;
 }
