@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.nperest.mapper.AnswerMapper">
+    <insert id="insert">
+        INSERT INTO tbl_answer (answer_content, member_id, question_id)
+        VALUES (#{answerContent}, #{memberId}, #{questionId})
+    </insert>
+
+   <select id="selectList" resultType="AnswerDTO" parameterType="AnswerDTO">
+    SELECT tbla.id,
+           tbla.answer_content,
+           tbla.status,
+           tbla.member_id,
+           tbla.question_id,
+           tbla.created_date,
+           tbla.updated_date,
+           tblm.member_name,
+           tblm.kakao_profile_url,
+           tblm.member_position,
+           (SELECT COUNT(*) FROM tbl_answer_reply WHERE answer_id = tbla.id AND status = 1) AS replyCnt,
+           (SELECT COUNT(*) FROM tbl_answer_like WHERE answer_id = tbla.id AND status = 1) AS likeCnt,
+           CASE
+               WHEN EXISTS (
+                   SELECT 1 FROM tbl_answer_like
+                   WHERE answer_id = tbla.id AND status = 1 AND member_id = 3
+               ) THEN TRUE
+               ELSE FALSE
+           END AS memberLiked
+    FROM tbl_answer tbla
+    LEFT JOIN tbl_member tblm ON tbla.member_id = tblm.id
+    WHERE tbla.question_id = #{questionId}
+      AND tbla.status = 1
+      AND tblm.status = 1
+    ORDER BY tbla.created_date DESC
+</select>
+
+    <update id="update">
+        UPDATE tbl_answer
+        SET answer_content = #{answerContent},
+            member_id      = #{memberId},
+            updated_date   = now()
+        WHERE id = #{id}
+    </update>
+
+    <update id="delete">
+        UPDATE tbl_answer
+        SET status       = 0,
+            member_id    = #{memberId},
+            updated_date = now()
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectLikeUserList" resultType="memberVO" parameterType="answerVO">
+        SELECT tbla.id,
+               tbla.status,
+               tbla.member_id,
+               tbla.created_date,
+               tbla.updated_date,
+               tblm.member_name,
+               tblm.kakao_profile_url,
+               tblm.member_position
+        FROM tbl_answer_like tbla
+                 LEFT JOIN tbl_member tblm ON tbla.member_id = tblm.id
+        WHERE 1 = 1
+          AND answer_id = #{id}
+          AND tbla.status = 1
+          AND tblm.status = 1
+        ORDER BY created_date DESC
+    </select>
+
+    <insert id="answerLikeInsert">
+        INSERT INTO tbl_answer_like (created_date, updated_date, member_id, answer_id)
+        VALUES (now(), now(), #{memberId}, #{id})
+    </insert>
+    <update id="answerLikeUpdate">
+        UPDATE tbl_answer_like
+        SET updated_date = now(),
+            status       = IF(status = 1, 0, 1)
+        WHERE member_id = #{memberId}
+          AND answer_id = #{id}
+    </update>
+
+    <select id="isLikeExist" resultType="Map">
+        SELECT *
+        FROM tbl_answer_like
+        WHERE member_id = #{memberId}
+          AND answer_id = #{id}
+    </select>
+
+</mapper>
