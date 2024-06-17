@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.nperest.mapper.FileMapper">
+   <select id="selectList" resultType="FileVO" parameterType="fileVO">
+       SELECT id,
+              created_date,
+              updated_date,
+              file_name,
+              file_path,
+              question_id
+       FROM tbl_file
+       WHERE question_id = #{questionId}
+   </select>
+</mapper>
