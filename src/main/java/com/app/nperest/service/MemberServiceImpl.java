@@ -111,8 +111,8 @@ public class MemberServiceImpl implements MemberService {
         List<MyAnswerDTO> myAnswerList = memberDAO.findMyAnswer(memberId, pagination);
 
         for (MyAnswerDTO myAnswer : myAnswerList){
-            myAnswer.setAnswerReplyCount(getAnswerLikeCount(memberId, myAnswer.getId()));
-            myAnswer.setAnswerLikeCount(getAnswerReplyCount(memberId, myAnswer.getId()));
+            myAnswer.setAnswerLikeCount(getAnswerLikeCount(memberId, myAnswer.getId()));
+            myAnswer.setAnswerReplyCount(getAnswerReplyCount(memberId, myAnswer.getId()));
             myAnswer.setMyAnswerTotalCount(getCountMyAnswer(memberId));
         }
 
