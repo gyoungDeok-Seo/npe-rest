@@ -20,5 +20,10 @@
         <typeAlias type="com.app.nperest.domain.MyQuestionDTO" alias="myQuestionDTO"/>
         <typeAlias type="com.app.nperest.domain.MyAnswerDTO" alias="myAnswerDTO"/>
         <typeAlias type="com.app.nperest.domain.AnswerLikeVO" alias="answerLikeVO"/>
+        <typeAlias type="com.app.nperest.domain.CareerVO" alias="careerVO"/>
+        <typeAlias type="com.app.nperest.domain.IndustryVO" alias="industryVO"/>
+        <typeAlias type="com.app.nperest.domain.CareerIndustryDTO" alias="careerIndustryDTO"/>
+        <typeAlias type="com.app.nperest.domain.CareerSkillDTO" alias="careerSkillDTO"/>
+        <typeAlias type="com.app.nperest.domain.CareerDTO" alias="careerDTO"/>
     </typeAliases>
 </configuration>

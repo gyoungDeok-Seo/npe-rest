@@ -16,7 +16,7 @@
         values (#{memberId}, #{answerId})
     </insert>
 
-    <select id="select" resultType="memberVO">
+    <select id="selectByKakaoEmail" resultType="memberVO">
         select id,
                created_date,
                updated_date,
@@ -30,11 +30,25 @@
         where kakao_email=#{kakaoEmail}
     </select>
 
+    <select id="selectById" resultType="memberVO">
+        select id,
+               created_date,
+               updated_date,
+               kakao_profile_url,
+               kakao_email,
+               member_name,
+               member_position,
+               member_intro,
+               status
+        from tbl_member
+        where id=#{id}
+    </select>
+
     <select id="selectMemberSkill" resultType="memberSkillDTO">
         select mk.id, member_id, skill_id, skill_name from tbl_member m
         join tbl_member_skill mk on  m.id = mk.member_id
         join tbl_skill s on mk.skill_id = s.id
-        where m.kakao_email = #{kakaoEmail}
+        where m.id = #{id}
     </select>
 
     <select id="selectSearchSkill" resultType="skillVO">
@@ -100,6 +114,10 @@
     <select id="selectAnswerLike" resultType="answerLikeVO">
         select id, status, member_id, answer_id from tbl_answer_like
         where member_id = #{memberId} and answer_id = #{answerId}
+    </select>
+
+    <select id="selectCareer" resultType="careerDTO">
+
     </select>
 
     <update id="updateKakaoProfileUrl">

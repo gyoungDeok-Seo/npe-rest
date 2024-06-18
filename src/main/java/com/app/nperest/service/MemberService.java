@@ -9,13 +9,15 @@ public interface MemberService {
 //    회원가입
     public void join(MemberVO memberVO);
 //    회원 정보 조회
-    public Optional<MemberVO> getMember(String kakaoEmail);
+    public Optional<MemberVO> getMemberByKakaoEmail(String kakaoEmail);
+//    회원 정보 조회
+    public Optional<MemberVO> getMemberById(Long id);
 //    회원 프로필 업데이트
     public void updateKakaoProfileUrl(MemberVO memberVO);
 //    회원 정보 수정
     public void modifyMemberInfo(MemberVO memberVO);
 //    회원 기술 조회
-    public List<MemberSkillDTO> getMemberSkill(String kakaoEmail);
+    public List<MemberSkillDTO> getMemberSkill(Long id);
 //    기술 검색
     public List<SkillVO> getSearchSkillList(Search search);
 //    회원 기술 추가
