@@ -84,4 +84,12 @@ public class MemberMapperTests {
         Long memberId = 2L;
         log.info("countMyQuestions: {}", memberMapper.countMyQuestions(memberId));
     }
+
+    @Test
+    public void answerLikeCountTest() {
+        Long memberId = 2L;
+        Long answerId = 74L;
+
+        log.info("answerLikeCount: {}", memberMapper.answerLikeCount(memberId, answerId));
+    }
 }

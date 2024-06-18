@@ -99,26 +99,43 @@ public class MemberAPI {
         return memberService.getMyAnswers(member.getId(), pagination);
     }
 
-    @GetMapping("/answer-like-count")
-    public int getAnswerLikeCount(HttpSession session, Long answerId){
+    @GetMapping("/answer-like")
+    public boolean getAnswerLike(HttpSession session, Long answerId){
+        boolean response = true;
         MemberVO member = (MemberVO) session.getAttribute("member");
+        Optional<AnswerLikeVO> foundAnswerLike = memberService.getAnswerLike(member.getId(), answerId);
 
-        return memberService.getAnswerLikeCount(member.getId(), answerId);
+        if(foundAnswerLike.isEmpty()){
+            response = false;
+        } else if(!foundAnswerLike.get().isStatus()) {
+            response = false;
+        }
+        return response;
     }
 
     @PatchMapping("/answer-like-modify")
-    public void modifyAnswerLike(HttpSession session, Long answerId) {
+    public Map<String, Object> modifyAnswerLike(HttpSession session, @RequestParam Long answerId) {
+        AnswerLikeVO answerLikeVO = new AnswerLikeVO();
+        Map<String, Object> response = new HashMap<>();
         MemberVO member = (MemberVO) session.getAttribute("member");
         Optional<AnswerLikeVO> foundAnswerLike = memberService.getAnswerLike(member.getId(), answerId);
+
         if(foundAnswerLike.isPresent()) {
-            AnswerLikeVO answerLikeVO = foundAnswerLike.get();
+            answerLikeVO = foundAnswerLike.get();
             answerLikeVO.setStatus(!answerLikeVO.isStatus());
             memberService.modifyAnswerLike(answerLikeVO);
         } else {
-            AnswerLikeVO answerLikeVO = new AnswerLikeVO();
-            answerLikeVO.setAnswerId(member.getId());
-            answerLikeVO.setMemberId(answerId);
+            answerLikeVO.setMemberId(member.getId());
+            answerLikeVO.setAnswerId(answerId);
             memberService.creatAnswerLike(answerLikeVO);
         }
+
+        int answerLikeCount = memberService.getAnswerLikeCount(member.getId(), answerId);
+        foundAnswerLike = memberService.getAnswerLike(member.getId(), answerId);
+
+        response.put("answerLikeCount", answerLikeCount);
+        response.put("answerLikeVO", foundAnswerLike.get());
+
+        return response;
     }
 }

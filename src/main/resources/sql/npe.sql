@@ -241,3 +241,14 @@ select *
 from tbl_skill;
 select *
 from tbl_member_skill;
+
+select count(al.id) from tbl_answer a
+join tbl_answer_like al on a.id = al.answer_id
+where a.id = 74 and a.member_id = 2 and a.status = 1 and al.status = 1;
+
+select a.id, a.created_date, a.updated_date, question_title, question_content, answer_content, a.status, a.member_id, question_id from tbl_question q
+join tbl_answer a on q.id = a.question_id and q.status =1
+where a.member_id = 2 and a.status = 1
+order by id desc
+limit 20
+offset 0;

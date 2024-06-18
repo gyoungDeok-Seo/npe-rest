@@ -72,8 +72,8 @@
 
     <select id="selectMyAnswer" resultType="myAnswerDTO">
         select a.id, a.created_date, a.updated_date, question_title, question_content, answer_content, a.status, a.member_id, question_id from tbl_question q
-        join tbl_answer a on q.id = a.question_id and q.status =1
-        where a.member_id = #{memberId} and a.status = 1
+        join tbl_answer a on q.id = a.question_id
+        where a.member_id = #{memberId} and a.status = 1 and q.status =1
         order by id desc
         limit #{pagination.rowCount}
         offset #{pagination.startRow}
@@ -82,13 +82,13 @@
     <select id="answerLikeCount" resultType="int">
         select count(al.id) from tbl_answer a
         join tbl_answer_like al on a.id = al.answer_id
-        where a.id = #{answerId} and a.member_id = #{memberId} and a.status = 1 and al.status = 1
+        where a.member_id = #{memberId} and a.id = #{answerId} and a.status = 1 and al.status = 1
     </select>
 
     <select id="answerReplyCount" resultType="int">
         select count(ar.id) from tbl_answer a
         join tbl_answer_reply ar on a.id = ar.answer_id
-        where a.id = #{answerId} and a.member_id = #{memberId} and a.status = 1 and ar.status = 1
+        where a.member_id = #{memberId} and a.id = #{answerId} and a.status = 1 and ar.status = 1
     </select>
 
     <select id="countMyAnswer" resultType="int">
