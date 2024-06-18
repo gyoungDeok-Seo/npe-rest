@@ -43,7 +43,7 @@ public class KakaoAPI {
 
         if(foundInfo.isPresent()) {
             memberService.join(foundInfo.get());
-            MemberVO memberVO = memberService.getMember(foundInfo.get().getKakaoEmail()).get();
+            MemberVO memberVO = memberService.getMemberByKakaoEmail(foundInfo.get().getKakaoEmail()).get();
             session.setAttribute("member", memberVO);
         }
         return new RedirectView("http://localhost:3000/");

@@ -23,13 +23,19 @@ public class MemberAPI {
     private final MemberService memberService;
 
     @GetMapping("/session")
-    public Map<String, Object> getSessionInfo(HttpSession session) {
+    public Map<String, Object> getSessionInfo(HttpSession session, Long memberId) {
+        MemberVO sessionMember = (MemberVO) session.getAttribute("member");
+
+        Optional<MemberVO> foundMember = memberService.getMemberById(memberId);
+        MemberVO member = foundMember.get();
+
         Map<String, Object> response = new HashMap<>();
-        MemberVO member = (MemberVO) session.getAttribute("member");
-        if (member != null) {
+        boolean same = sessionMember.getId().equals(member.getId());
+        response.put("member", member);
+        response.put("same", same);
+        if(sessionMember != null){
             response.put("loggedIn", true);
-            response.put("member", member);
-        } else {
+        }else {
             response.put("loggedIn", false);
         }
 
@@ -52,11 +58,10 @@ public class MemberAPI {
     }
 
     @GetMapping("/skill")
-    public List<MemberSkillDTO> getMemberSkill(HttpSession session) {
-        MemberVO member = (MemberVO) session.getAttribute("member");
-        String kakaoEmail = member.getKakaoEmail();
+    public List<MemberSkillDTO> getMemberSkill(Long memberId) {
+//        MemberVO member = (MemberVO) session.getAttribute("member");
 
-        return memberService.getMemberSkill(kakaoEmail);
+        return memberService.getMemberSkill(memberId);
     }
 
     @PostMapping("/skill")
@@ -86,17 +91,17 @@ public class MemberAPI {
     }
 
     @GetMapping("/my-question-list")
-    public List<MyQuestionDTO> getMyQuestions(HttpSession session, Pagination pagination) {
-        MemberVO member = (MemberVO) session.getAttribute("member");
+    public List<MyQuestionDTO> getMyQuestions(Long memberId, Pagination pagination) {
+//        MemberVO member = (MemberVO) session.getAttribute("member");
 
-        return memberService.getMyQuestions(member.getId(), pagination);
+        return memberService.getMyQuestions(memberId, pagination);
     }
 
     @GetMapping("/my-answer-list")
-    public List<MyAnswerDTO> getMyAnswers(HttpSession session, Pagination pagination) {
-        MemberVO member = (MemberVO) session.getAttribute("member");
+    public List<MyAnswerDTO> getMyAnswers(Long memberId, Pagination pagination) {
+//        MemberVO member = (MemberVO) session.getAttribute("member");
 
-        return memberService.getMyAnswers(member.getId(), pagination);
+        return memberService.getMyAnswers(memberId, pagination);
     }
 
     @GetMapping("/answer-like")
@@ -137,5 +142,15 @@ public class MemberAPI {
         response.put("answerLikeVO", foundAnswerLike.get());
 
         return response;
+    }
+
+    @GetMapping("/career-list")
+    public List<CareerDTO> getCareerList(Long memberId) {
+        return null;
+    }
+
+    @GetMapping("/my-social-link")
+    public void getMySocialLink(HttpSession session, Pagination pagination) {
+        MemberVO member = (MemberVO) session.getAttribute("member");
     }
 }

@@ -2,6 +2,7 @@ package com.app.nperest.service;
 
 import com.app.nperest.domain.*;
 import com.app.nperest.repository.MemberDAO;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -17,11 +18,12 @@ import java.util.Optional;
 @Primary
 public class MemberServiceImpl implements MemberService {
     private final MemberDAO memberDAO;
+    private final HttpSession session;
 //    회원가입
     @Override
     public void join(MemberVO memberVO) {
 //        유무 검사를 위해 Optional 객체로 생성
-        Optional<MemberVO> foundMember = getMember(memberVO.getKakaoEmail());
+        Optional<MemberVO> foundMember = getMemberByKakaoEmail(memberVO.getKakaoEmail());
 //        1. 최초 로그인 검사
         if (foundMember.isEmpty()){
             memberVO.setMemberPosition(" ");
@@ -38,8 +40,18 @@ public class MemberServiceImpl implements MemberService {
     }
 //    회원 정보 조회
     @Override
-    public Optional<MemberVO> getMember(String kakaoEmail){
+    public Optional<MemberVO> getMemberByKakaoEmail(String kakaoEmail){
         return memberDAO.findByKakaoEmail(kakaoEmail);
+    }
+//    회원 정보 조회
+    @Override
+    public Optional<MemberVO> getMemberById(Long id){
+        MemberVO member = (MemberVO) session.getAttribute("member");
+
+        if(id == null){
+            return memberDAO.findById(member.getId());
+        }
+        return memberDAO.findById(id);
     }
 //    회원 프로필 업데이트
     @Override
@@ -52,8 +64,8 @@ public class MemberServiceImpl implements MemberService {
     };
 //    회원 기술 조회
     @Override
-    public List<MemberSkillDTO> getMemberSkill(String kakaoEmail){
-        return memberDAO.findByKakaoEmailForMemberSkill(kakaoEmail);
+    public List<MemberSkillDTO> getMemberSkill(Long id){
+        return memberDAO.findByKakaoEmailForMemberSkill(id);
     };
 //    기술 검색
     @Override

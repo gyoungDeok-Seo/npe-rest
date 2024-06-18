@@ -18,7 +18,11 @@ public class MemberDAO {
     }
 //    회원 정보 조회
     public Optional<MemberVO> findByKakaoEmail(String kakaoEmail){
-        return memberMapper.select(kakaoEmail);
+        return memberMapper.selectByKakaoEmail(kakaoEmail);
+    };
+//    회원 정보 조회
+    public Optional<MemberVO> findById(Long id){
+        return memberMapper.selectById(id);
     };
 //    회원 프로필 업데이트
     public void updateKakaoProfileUrl(MemberVO memberVO){
@@ -29,8 +33,8 @@ public class MemberDAO {
         memberMapper.updateMemberInfo(memberVO);
     };
 //    회원 기술 조회
-    public List<MemberSkillDTO> findByKakaoEmailForMemberSkill(String kakaoEmail){
-        return memberMapper.selectMemberSkill(kakaoEmail);
+    public List<MemberSkillDTO> findByKakaoEmailForMemberSkill(Long id){
+        return memberMapper.selectMemberSkill(id);
     };
 //    기술 검색
     public List<SkillVO> findByKeywordForSearchSkill(Search search){

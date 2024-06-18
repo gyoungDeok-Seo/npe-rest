@@ -30,7 +30,7 @@ public class MemberMapperTests {
     @Test
     public void selectTest() {
         String kakaoEmail = "hong1234@gmail.com";
-        Optional<MemberVO> member = memberMapper.select(kakaoEmail);
+        Optional<MemberVO> member = memberMapper.selectByKakaoEmail(kakaoEmail);
 
         log.info("member: {}", member);
     }
@@ -45,7 +45,7 @@ public class MemberMapperTests {
 
     @Test
     public void selectMemberSkillTest(){
-        List<MemberSkillDTO> memberSkills = memberMapper.selectMemberSkill("dlfjs158@nate.com");
+        List<MemberSkillDTO> memberSkills = memberMapper.selectMemberSkill(2L);
         if(memberSkills.isEmpty()){
             log.info("비었다");
         } else {
