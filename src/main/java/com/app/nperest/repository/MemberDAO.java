@@ -128,4 +128,16 @@ public class MemberDAO {
     public void dropCareerSkills(CareerSkillDTO careerSkillDTO){
         memberMapper.deleteCareerSkills(careerSkillDTO);
     };
+//    회원 교육 수정
+    public void saveEducation(EducationVO educationVO){
+        memberMapper.insertEducation(educationVO);
+    };
+//    회원 교육 전체 조회
+    public List<EducationVO> findEducationByMemberId(Long memberId){
+        return memberMapper.selectEducationByMemberId(memberId);
+    };
+//    회원 교육 수정 및 삭제
+    public void updateEducation(EducationVO educationVO){
+        memberMapper.updateEducation(educationVO);
+    };
 }
