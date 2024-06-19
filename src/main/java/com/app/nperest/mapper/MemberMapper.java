@@ -66,4 +66,10 @@ public interface MemberMapper {
     public void deleteCareerIndustries(CareerIndustryDTO careerIndustryDTO);
 //    회원 경력별 스킬 삭제
     public void deleteCareerSkills(CareerSkillDTO careerSkillDTO);
+//    회원 교육 수정
+    public void insertEducation(EducationVO educationVO);
+//    회원 교육 전체 조회
+    public List<EducationVO> selectEducationByMemberId(Long memberId);
+//    회원 교육 수정 및 삭제
+    public void updateEducation(EducationVO educationVO);
 }

@@ -235,4 +235,22 @@ public class MemberServiceImpl implements MemberService {
     public void dropCareerSkills(CareerSkillDTO careerSkillDTO) {
         memberDAO.dropCareerSkills(careerSkillDTO);
     }
+
+    @Override
+    public void createEducation(EducationVO educationVO) {
+        MemberVO member = (MemberVO) session.getAttribute("member");
+        educationVO.setMemberId(member.getId());
+        memberDAO.saveEducation(educationVO);
+    }
+
+    @Override
+    public List<EducationVO> getEducationByMemberId(Long memberId) {
+        return memberDAO.findEducationByMemberId(memberId);
+
+    }
+
+    @Override
+    public void modifyEducation(EducationVO educationVO) {
+        memberDAO.updateEducation(educationVO);
+    }
 }
