@@ -146,11 +146,12 @@ public class MemberAPI {
 
     @GetMapping("/career-list")
     public List<CareerDTO> getCareerList(Long memberId) {
-        return null;
+        return memberService.getCareerByMemberId(memberId);
     }
 
-    @GetMapping("/my-social-link")
-    public void getMySocialLink(HttpSession session, Pagination pagination) {
-        MemberVO member = (MemberVO) session.getAttribute("member");
+    @PostMapping("/create-career")
+    public void createCareer(@RequestBody CareerDTO careerDTO) {
+//        System.out.println(careerDTO.getCareerSkills());
+        memberService.createCareer(careerDTO);
     }
 }

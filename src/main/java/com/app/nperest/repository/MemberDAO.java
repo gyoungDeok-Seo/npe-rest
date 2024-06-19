@@ -92,4 +92,28 @@ public class MemberDAO {
     public void saveAnswerLike(AnswerLikeVO answerLikeVO){
         memberMapper.insertAnswerLike(answerLikeVO);
     };
+//    회원 경력 생성
+    public void saveCareer(CareerDTO careerDTO){
+        memberMapper.insertCareer(careerDTO);
+    };
+//    회원 경력 산업 분야 생성
+    public void saveCareerIndustry(Long careerId, Long industryId){
+        memberMapper.insertCareerIndustry(careerId, industryId);
+    };
+//    회원 경력 스킬 생성
+    public void saveCareerSkill(Long careerId, Long skillId){
+        memberMapper.insertCareerSkill(careerId, skillId);
+    };
+//    회원 경력 조회
+    public List<CareerDTO> findCareerByMemberId(Long memberId){
+        return memberMapper.selectCareer(memberId);
+    };
+//    회원 경력별 산업 분야 조회
+    public List<CareerIndustryDTO> findCareerIndustryByCareerId(Long careerId){
+        return memberMapper.selectCareerIndustry(careerId);
+    };
+//    회원 경력별 스킬 조회
+    public List<CareerSkillDTO> findCareerSkillByCareerId(Long careerId){
+        return memberMapper.selectCareerSkill(careerId);
+    };
 }

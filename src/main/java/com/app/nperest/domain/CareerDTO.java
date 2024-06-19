@@ -19,8 +19,8 @@ public class CareerDTO extends Period implements Serializable {
     private Long id;
     private String companyName;
     private String memberPosition;
-    private YearMonth careerStart;
-    private YearMonth careerEnd;
+    private String careerStart;
+    private String careerEnd;
     private String description;
     private String careerUrl;
     private boolean status;

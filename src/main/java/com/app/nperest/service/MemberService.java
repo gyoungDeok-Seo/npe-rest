@@ -46,4 +46,16 @@ public interface MemberService {
     public void modifyAnswerLike(AnswerLikeVO answerLikeVO);
 //    답글에 대한 회원의 좋아요 생성
     public void creatAnswerLike(AnswerLikeVO answerLikeVO);
+//    회원 경력 생성
+    public void createCareer(CareerDTO careerDTO);
+//    회원 경력 산업 분야 생성
+    public void createCareerIndustry(Long careerId, Long industryId);
+//    회원 경력 스킬 생성
+    public void createCareerSkill(Long careerId, Long skillId);
+//    회원 경력 조회
+    public List<CareerDTO> getCareerByMemberId(Long memberId);
+//    회원 경력별 산업 분야 조회
+    public List<CareerIndustryDTO> getCareerIndustryByCareerId(Long careerId);
+//    회원 경력별 스킬 조회
+    public List<CareerSkillDTO> getCareerSkillByCareerId(Long careerId);
 }

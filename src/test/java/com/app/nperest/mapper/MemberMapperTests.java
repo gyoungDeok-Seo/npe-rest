@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @SpringBootTest
@@ -91,5 +92,22 @@ public class MemberMapperTests {
         Long answerId = 74L;
 
         log.info("answerLikeCount: {}", memberMapper.answerLikeCount(memberId, answerId));
+    }
+    @Test
+    public void insertCareerTest() {
+        CareerDTO careerDTO = new CareerDTO();
+        careerDTO.setCompanyName("더미데이터3컴퍼니");
+        careerDTO.setMemberPosition("개발팀 팀장");
+        careerDTO.setCareerStart("2020-06-01");
+        careerDTO.setCareerEnd("9999-99-99");
+        careerDTO.setDescription("대충 소개");
+        careerDTO.setCareerUrl("www.naver.com");
+        careerDTO.setMemberId(2L);
+
+        if(Objects.equals(careerDTO.getCareerEnd(), "9999-99-99")){
+            careerDTO.setCareerEnd(null);
+        }
+
+        memberMapper.insertCareer(careerDTO);
     }
 }

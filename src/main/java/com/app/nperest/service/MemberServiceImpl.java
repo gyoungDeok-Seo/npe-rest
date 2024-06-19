@@ -18,16 +18,19 @@ import java.util.Optional;
 @Primary
 public class MemberServiceImpl implements MemberService {
     private final MemberDAO memberDAO;
+
     private final HttpSession session;
 //    회원가입
     @Override
     public void join(MemberVO memberVO) {
+        long result = 0L;
 //        유무 검사를 위해 Optional 객체로 생성
         Optional<MemberVO> foundMember = getMemberByKakaoEmail(memberVO.getKakaoEmail());
 //        1. 최초 로그인 검사
         if (foundMember.isEmpty()){
             memberVO.setMemberPosition(" ");
             memberDAO.save(memberVO);
+            result = memberVO.getId();
         } else { // 이메일 정보가 있을 경우
             MemberVO member = foundMember.get();
             String oldUrl = member.getKakaoProfileUrl();
@@ -36,7 +39,11 @@ public class MemberServiceImpl implements MemberService {
                 member.setKakaoProfileUrl(newUrl);
                 updateKakaoProfileUrl(member);
             }
+            result = member.getId();
         }
+        MemberVO sessionMember = getMemberById(result).get();
+        System.out.println("Setting session attribute: " + sessionMember);
+        session.setAttribute("member", sessionMember);
     }
 //    회원 정보 조회
     @Override
@@ -158,5 +165,63 @@ public class MemberServiceImpl implements MemberService {
 //    답글에 대한 회원의 좋아요 생성
     public void creatAnswerLike(AnswerLikeVO answerLikeVO){
         memberDAO.saveAnswerLike(answerLikeVO);
-    };
+    }
+
+    @Override
+    public void createCareer(CareerDTO careerDTO) {
+        MemberVO member = (MemberVO) session.getAttribute("member");
+        careerDTO.setMemberId(member.getId());
+
+        if(Objects.equals(careerDTO.getCareerEnd(), "9999-99-99")){
+            careerDTO.setCareerEnd(null);
+        }
+
+        memberDAO.saveCareer(careerDTO);
+
+        if(careerDTO.getCareerIndustries() != null){
+            for(CareerIndustryDTO careerIndustryDTO : careerDTO.getCareerIndustries()) {
+                createCareerIndustry(careerDTO.getId(), careerIndustryDTO.getIndustryId());
+            };
+        }
+
+        if(careerDTO.getCareerSkills() != null){
+            for(CareerSkillDTO careerSkillDTO : careerDTO.getCareerSkills()) {
+                createCareerSkill(careerDTO.getId(), careerSkillDTO.getSkillId());
+            }
+        }
+    }
+
+    @Override
+    public void createCareerIndustry(Long careerId, Long industryId) {
+        memberDAO.saveCareerIndustry(careerId, industryId);
+    }
+
+    @Override
+    public void createCareerSkill(Long careerId, Long skillId) {
+        memberDAO.saveCareerSkill(careerId, skillId);
+    }
+
+    @Override
+    public List<CareerDTO> getCareerByMemberId(Long memberId) {
+        List<CareerDTO> result = memberDAO.findCareerByMemberId(memberId);
+
+        if(result != null) {
+            for(CareerDTO careerDTO : result){
+                careerDTO.setCareerIndustries(getCareerIndustryByCareerId(careerDTO.getId()));
+                careerDTO.setCareerSkills(getCareerSkillByCareerId(careerDTO.getId()));
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<CareerIndustryDTO> getCareerIndustryByCareerId(Long careerId) {
+        return memberDAO.findCareerIndustryByCareerId(careerId);
+    }
+
+    @Override
+    public List<CareerSkillDTO> getCareerSkillByCareerId(Long careerId) {
+        return memberDAO.findCareerSkillByCareerId(careerId);
+    }
 }
