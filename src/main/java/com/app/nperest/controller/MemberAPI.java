@@ -210,15 +210,14 @@ public class MemberAPI {
         return "ok";
     }
 
-    @GetMapping("/get-education")
-    public List<EducationVO> getEducation(Long id){
-        return memberService.getEducationByMemberId(id);
+    @GetMapping("/education-list")
+    public List<EducationVO> getEducation(Long memberId){
+        return memberService.getEducationByMemberId(memberId);
     }
 
     @PostMapping("/create-education")
-    public String createEducation(@RequestBody EducationVO educationVO){
+    public void createEducation(@RequestBody EducationVO educationVO){
         memberService.createEducation(educationVO);
-        return "ok";
     }
 
     @PatchMapping("/update-education")
