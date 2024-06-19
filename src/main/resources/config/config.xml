@@ -25,5 +25,7 @@
         <typeAlias type="com.app.nperest.domain.CareerIndustryDTO" alias="careerIndustryDTO"/>
         <typeAlias type="com.app.nperest.domain.CareerSkillDTO" alias="careerSkillDTO"/>
         <typeAlias type="com.app.nperest.domain.CareerDTO" alias="careerDTO"/>
+        <typeAlias type="com.app.nperest.domain.ModifyCareerInListInfo" alias="modifyCareerInListInfo"/>
+
     </typeAliases>
 </configuration>

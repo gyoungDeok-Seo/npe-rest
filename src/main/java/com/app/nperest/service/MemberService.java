@@ -58,4 +58,10 @@ public interface MemberService {
     public List<CareerIndustryDTO> getCareerIndustryByCareerId(Long careerId);
 //    회원 경력별 스킬 조회
     public List<CareerSkillDTO> getCareerSkillByCareerId(Long careerId);
+//    회원 경력 수정
+    public void modifyMemberCareer(CareerDTO careerDTO);
+//    회원 경력별 산업 분야 삭제
+    public void dropCareerIndustries(CareerIndustryDTO careerIndustryDTO);
+//    회원 경력별 스킬 삭제
+    public void dropCareerSkills(CareerSkillDTO careerSkillDTO);
 }

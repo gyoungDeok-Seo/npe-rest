@@ -166,9 +166,31 @@
         where member_id = #{memberId} and answer_id = #{answerId}
     </update>
 
+    <update id="updateMemberCareer">
+        update tbl_career
+        set updated_date = current_timestamp,
+            company_name = #{companyName},
+            member_position = #{memberPosition},
+            career_start = #{careerStart},
+            career_end = #{careerEnd},
+            description = #{description},
+            status = #{status}
+        where id = #{id}
+    </update>
+
     <delete id="deleteMemberSkill">
         delete from tbl_member_skill
         where member_id = #{memberId} and skill_id = #{skillId}
+    </delete>
+
+    <delete id="deleteCareerIndustries">
+        delete from tbl_career_industry
+        where career_id = #{careerId} and industry_id = #{industryId}
+    </delete>
+
+    <delete id="deleteCareerSkills">
+        delete from tbl_career_skill
+        where career_id = #{careerId} and skill_id = #{skillId}
     </delete>
 
 </mapper>

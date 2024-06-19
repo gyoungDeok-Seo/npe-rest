@@ -116,4 +116,16 @@ public class MemberDAO {
     public List<CareerSkillDTO> findCareerSkillByCareerId(Long careerId){
         return memberMapper.selectCareerSkill(careerId);
     };
+//    회원 경력 수정
+    public void updateMemberCareer(CareerDTO careerDTO){
+        memberMapper.updateMemberCareer(careerDTO);
+    };
+//    회원 경력별 산업 분야 삭제
+    public void dropCareerIndustries(CareerIndustryDTO careerIndustryDTO){
+        memberMapper.deleteCareerIndustries(careerIndustryDTO);
+    };
+//    회원 경력별 스킬 삭제
+    public void dropCareerSkills(CareerSkillDTO careerSkillDTO){
+        memberMapper.deleteCareerSkills(careerSkillDTO);
+    };
 }
