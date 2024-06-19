@@ -5,13 +5,14 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Component
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class QnaDTO extends Period {
+public class QnaDTO extends Period implements Serializable {
     private Long id;
     private String questionTitle;
     private String questionContent;

@@ -82,6 +82,9 @@
         ORDER BY q.id
         LIMIT #{start}, #{pageSize};
     </select>
+    <select id="tagSearchQnaCount" >
+
+    </select>
     <select id="selectDetail" resultType="qnaDetailDTO" parameterType="qnaDetailDTO">
         SELECT q.id,
                q.question_title,

@@ -1,6 +1,5 @@
 package com.app.nperest.service;
 
-import com.app.nperest.domain.AnswerVO;
 import com.app.nperest.domain.QnaDTO;
 import com.app.nperest.domain.QnaDetailDTO;
 

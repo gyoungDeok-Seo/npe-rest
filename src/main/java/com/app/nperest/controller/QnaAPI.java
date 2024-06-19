@@ -42,9 +42,9 @@ public class QnaAPI {
     // answerCnt랑 returnTag 리턴 확인 필요
     @GetMapping("/list")
     public Map<String, Object> selectList(HttpSession session,
-                                          @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
-                                          @RequestParam(name = "startPage", defaultValue = "0") int startPage,
-                                          @RequestParam(name = "tag", defaultValue = "") String tag) {
+                                          @RequestParam("pageSize") int pageSize,
+                                          @RequestParam("startPage") int startPage,
+                                          @RequestParam("tag") String tag) {
         QnaDTO qnaDTO = new QnaDTO();
         qnaDTO.setPageSize(pageSize);
         qnaDTO.setStartPage(startPage);
