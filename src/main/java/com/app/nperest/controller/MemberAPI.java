@@ -154,4 +154,44 @@ public class MemberAPI {
 //        System.out.println(careerDTO.getCareerSkills());
         memberService.createCareer(careerDTO);
     }
+
+    @PatchMapping("/update-career")
+    public void updateCareer(@RequestBody CareerUpdateRequest request) {
+        System.out.println(request.getCreateCareer());
+        System.out.println(request.getListInfo().getAddIndustryList().isEmpty());
+        CareerDTO careerDTO = request.getCreateCareer();
+        ModifyCareerInListInfo listInfo = request.getListInfo();
+
+        if(!listInfo.getAddIndustryList().isEmpty()){
+            for(CareerIndustryDTO addIndustry : listInfo.getAddIndustryList()) {
+                memberService.createCareerIndustry(addIndustry.getCareerId(), addIndustry.getIndustryId());
+            }
+        }
+        if(!listInfo.getRemoveIndustryList().isEmpty()){
+            for(CareerIndustryDTO removeIndustry : listInfo.getRemoveIndustryList()) {
+                memberService.dropCareerIndustries(removeIndustry);
+            }
+        }
+        if(!listInfo.getAddSkillList().isEmpty()){
+            for(CareerSkillDTO addSkill : listInfo.getAddSkillList()) {
+                memberService.createCareerSkill(addSkill.getCareerId(), addSkill.getSkillId());
+            }
+        }
+        if(!listInfo.getRemoveSkillList().isEmpty()){
+            for(CareerSkillDTO removeSkill : listInfo.getRemoveSkillList()) {
+                memberService.dropCareerSkills(removeSkill);
+            }
+        }
+
+        careerDTO.setStatus(true);
+        careerDTO.setCareerIndustries(memberService.getCareerIndustryByCareerId(careerDTO.getId()));
+        careerDTO.setCareerSkills(memberService.getCareerSkillByCareerId(careerDTO.getId()));
+        System.out.println(careerDTO);
+        memberService.modifyMemberCareer(careerDTO);
+    }
+
+    @DeleteMapping("/delete-career")
+    public void deleteCareer(@RequestBody CareerDTO careerDTO) {
+        System.out.println(careerDTO);
+    }
 }

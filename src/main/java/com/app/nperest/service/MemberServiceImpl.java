@@ -172,10 +172,6 @@ public class MemberServiceImpl implements MemberService {
         MemberVO member = (MemberVO) session.getAttribute("member");
         careerDTO.setMemberId(member.getId());
 
-        if(Objects.equals(careerDTO.getCareerEnd(), "9999-99-99")){
-            careerDTO.setCareerEnd(null);
-        }
-
         memberDAO.saveCareer(careerDTO);
 
         if(careerDTO.getCareerIndustries() != null){
@@ -223,5 +219,20 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<CareerSkillDTO> getCareerSkillByCareerId(Long careerId) {
         return memberDAO.findCareerSkillByCareerId(careerId);
+    }
+
+    @Override
+    public void modifyMemberCareer(CareerDTO careerDTO) {
+        memberDAO.updateMemberCareer(careerDTO);
+    }
+
+    @Override
+    public void dropCareerIndustries(CareerIndustryDTO careerIndustryDTO) {
+        memberDAO.dropCareerIndustries(careerIndustryDTO);
+    }
+
+    @Override
+    public void dropCareerSkills(CareerSkillDTO careerSkillDTO) {
+        memberDAO.dropCareerSkills(careerSkillDTO);
     }
 }

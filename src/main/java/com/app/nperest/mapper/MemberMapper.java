@@ -60,4 +60,10 @@ public interface MemberMapper {
     public List<CareerIndustryDTO> selectCareerIndustry(Long careerId);
 //    회원 경력별 스킬 조회
     public List<CareerSkillDTO> selectCareerSkill(Long careerId);
+//    회원 경력 수정
+    public void updateMemberCareer(CareerDTO careerDTO);
+//    회원 경력별 산업 분야 삭제
+    public void deleteCareerIndustries(CareerIndustryDTO careerIndustryDTO);
+//    회원 경력별 스킬 삭제
+    public void deleteCareerSkills(CareerSkillDTO careerSkillDTO);
 }
