@@ -23,18 +23,10 @@ public class QnaDTO extends Period implements Serializable {
     private String memberPosition;
     private List<FileVO> files;
     private List<TagVO> tags;
-    private int pageSize = 10;
-    private int startPage = 0;
-    private int endPage = 1;
-    private int flag;
-    private int offset;
-    private int start;
+    private int hits;
     private int answerCnt;
     private int replyCnt;
-    private String returnTag;
-
-    public void paging() {
-        this.start = this.pageSize * this.startPage;
-        this.offset = this.pageSize * this.endPage;
-    }
+    private int maxLikeCnt;
+    private List<AnswerVO> answerList;
+    private List<AnswerReplyVO> replyList;
 }

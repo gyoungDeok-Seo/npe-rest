@@ -62,4 +62,15 @@ public class QnaServiceTests {
 
         qnaService.insert(qnaDTO);
     }
+
+    @Test
+    public void selectCategoryListTest() {
+        System.out.println(qnaService.selectCategoryList());
+    }
+
+    @Test
+    public void selectTopTenTest() {
+        System.out.println(qnaService.selectTopTen());
+    }
+
 }

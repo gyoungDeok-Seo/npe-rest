@@ -26,4 +26,6 @@ public interface AnswerReplyMapper {
     public void replyLikeUpdate(AnswerReplyVO answerReplyVO);
 
     public Map<String, Object> isLikeExist(AnswerReplyVO answerReplyVO);
+
+    public int selectReplyCount(Long answerId);
 }

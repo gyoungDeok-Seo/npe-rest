@@ -47,4 +47,7 @@ public class AnswerReplyDAO {
         Map<String, Object> result = answerReplyMapper.isLikeExist(answerReplyVO);
         return result != null ? result : new HashMap<>();
     }
+    public int selectReplyCount(Long answerId){
+        return answerReplyMapper.selectReplyCount(answerId);
+    }
 }

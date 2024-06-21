@@ -13,7 +13,7 @@ import java.util.List;
 public class TagDAO {
     private final TagMapper tagMapper;
 
-    public List<TagVO> selectList(TagVO tagVO) {
-        return tagMapper.selectList(tagVO);
+    public List<TagVO> selectTagList(Long id) {
+        return tagMapper.selectTagList(id);
     }
 }

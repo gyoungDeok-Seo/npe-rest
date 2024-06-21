@@ -7,5 +7,5 @@ import java.util.List;
 
 @Mapper
 public interface TagMapper {
-     public List<TagVO> selectList(TagVO tagVO);
+     public List<TagVO> selectTagList(Long id);
 }

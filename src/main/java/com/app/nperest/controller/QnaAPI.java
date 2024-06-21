@@ -39,75 +39,85 @@ public class QnaAPI {
         return response;
     }
 
-    // answerCnt랑 returnTag 리턴 확인 필요
     @GetMapping("/list")
-    public Map<String, Object> selectList(HttpSession session,
-                                          @RequestParam("pageSize") int pageSize,
-                                          @RequestParam("startPage") int startPage,
-                                          @RequestParam("tag") String tag) {
-        QnaDTO qnaDTO = new QnaDTO();
-        qnaDTO.setPageSize(pageSize);
-        qnaDTO.setStartPage(startPage);
+    public List<QnaDTO> selectQnaList() {
+        List<QnaDTO> list = qnaService.selectQnaList();
+        int replyCnt = 0;
 
-        // 태그 필터링을 위해 태그 정보를 설정
-        if (!tag.isEmpty()) {
-            TagVO tagVO = new TagVO();
-            tagVO.setTagName(tag);
-            qnaDTO.setTags(Collections.singletonList(tagVO));
+        for (QnaDTO qna : list) {
+            if(qna.getAnswerList() != null) {
+                for (AnswerVO answer : qna.getAnswerList()) {
+                    replyCnt += answerReplyService.selectReplyCount(answer.getId());
+                }
+                qna.setReplyCnt(replyCnt);
+            }
+
+            qna.setTags(tagService.selectTagList(qna.getId()));
         }
 
-        List<QnaDTO> list = qnaService.selectList(qnaDTO);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("successMsg", true);
-        response.put("list", list);
-
-        return response;
+        return list;
     }
 
-    @GetMapping("/detail/{id}")
-    public Map<String, Object> detailQnas(HttpSession session, @PathVariable("id") Long id) {
-        MemberVO memberVO = (MemberVO) session.getAttribute("member");
-        QnaDetailDTO qnaDetailDTO = new QnaDetailDTO();
-        qnaDetailDTO.setMemberId(memberVO.getId());
-        qnaDetailDTO.setId(id);
-        QnaDetailDTO detail = qnaService.selectDetail(qnaDetailDTO);
 
-        AnswerDTO answerDTO = new AnswerDTO();
-        answerDTO.setQuestionId(id);
-        List<AnswerDTO> answerList = answerService.selectList(answerDTO);
+//    @GetMapping("/detail/{id}")
+//    public Map<String, Object> detailQnas(HttpSession session, @PathVariable("id") Long id) {
+//        MemberVO memberVO = (MemberVO) session.getAttribute("member");
+//        QnaDetailDTO qnaDetailDTO = new QnaDetailDTO();
+//        qnaDetailDTO.setMemberId(memberVO.getId());
+//        qnaDetailDTO.setId(id);
+//        QnaDetailDTO detail = qnaService.selectDetail(qnaDetailDTO);
+//
+//        AnswerDTO answerDTO = new AnswerDTO();
+//        answerDTO.setQuestionId(id);
+//        List<AnswerDTO> answerList = answerService.selectList(answerDTO);
+//
+//        for (AnswerDTO answer : answerList) {
+//            AnswerReplyDTO replyDTO = new AnswerReplyDTO();
+//            replyDTO.setAnswerId(answer.getId());
+//            replyDTO.setMemberId(memberVO.getId()); // 현재 회원의 ID를 설정합니다.
+//            List<AnswerReplyDTO> replyList = answerReplyService.selectList(replyDTO);
+//            answer.setReplyList(replyList);
+//        }
+//
+//        TagVO tagVO = new TagVO();
+//        tagVO.setQuestionId(id);
+//        List<TagVO> tagList = tagService.selectList(tagVO);
+//
+//        FileVO fileVO = new FileVO();
+//        fileVO.setQuestionId(id);
+//        List<FileVO> fileList = fileService.selectList(fileVO);
+//
+//        Map<String, Object> response = new HashMap<>();
+//
+//        response.put("id", detail.getId());
+//        response.put("questionTitle", detail.getQuestionTitle());
+//        response.put("questionContent", detail.getQuestionContent());
+//        response.put("status", detail.isStatus());
+//        response.put("categoryName", detail.getCategoryName());
+//        response.put("categoryValue", detail.getCategoryValue());
+//        response.put("memberId", detail.getMemberId());
+//        response.put("createdDate", detail.getCreatedDate());
+//        response.put("updatedDate", detail.getUpdatedDate());
+//        response.put("answerList", answerList);
+//        response.put("fileList", fileList);
+//        response.put("tagList", tagList);
+//        return response;
+//    }
 
-        for (AnswerDTO answer : answerList) {
-            AnswerReplyDTO replyDTO = new AnswerReplyDTO();
-            replyDTO.setAnswerId(answer.getId());
-            replyDTO.setMemberId(memberVO.getId()); // 현재 회원의 ID를 설정합니다.
-            List<AnswerReplyDTO> replyList = answerReplyService.selectList(replyDTO);
-            answer.setReplyList(replyList);
-        }
+    // 메인화면에 카테고리 리스트
+    @GetMapping("category/list")
+    public List<CategoryVO> selectCategoryList() {
+        return qnaService.selectCategoryList();
+    }
 
-        TagVO tagVO = new TagVO();
-        tagVO.setQuestionId(id);
-        List<TagVO> tagList = tagService.selectList(tagVO);
+    @GetMapping("top-ten/list")
+    public List<QnaDTO> selectTopTen() {
+        return qnaService.selectTopTen();
+    }
 
-        FileVO fileVO = new FileVO();
-        fileVO.setQuestionId(id);
-        List<FileVO> fileList = fileService.selectList(fileVO);
-
-        Map<String, Object> response = new HashMap<>();
-
-        response.put("id", detail.getId());
-        response.put("questionTitle", detail.getQuestionTitle());
-        response.put("questionContent", detail.getQuestionContent());
-        response.put("status", detail.isStatus());
-        response.put("categoryName", detail.getCategoryName());
-        response.put("categoryValue", detail.getCategoryValue());
-        response.put("memberId", detail.getMemberId());
-        response.put("createdDate", detail.getCreatedDate());
-        response.put("updatedDate", detail.getUpdatedDate());
-        response.put("answerList", answerList);
-        response.put("fileList", fileList);
-        response.put("tagList", tagList);
-        return response;
+    @GetMapping("best-answer/list")
+    public List<QnaDTO> selectBestAnswer() {
+        return qnaService.selectBestAnswer();
     }
 
 }
