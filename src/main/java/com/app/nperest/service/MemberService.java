@@ -64,4 +64,10 @@ public interface MemberService {
     public void dropCareerIndustries(CareerIndustryDTO careerIndustryDTO);
 //    회원 경력별 스킬 삭제
     public void dropCareerSkills(CareerSkillDTO careerSkillDTO);
+//    회원 교육 수정
+    public void createEducation(EducationVO educationVO);
+//    회원 교육 전체 조회
+    public List<EducationVO> getEducationByMemberId(Long memberId);
+//    회원 교육 수정 및 삭제
+    public void modifyEducation(EducationVO educationVO);
 }

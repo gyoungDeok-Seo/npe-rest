@@ -73,7 +73,15 @@
     </select>
 
     <select id="selectMyQuestions" resultType="myQuestionDTO">
-        select id, created_date, updated_date, question_title, question_content, status, member_id, category_id from tbl_question
+        select id,
+               created_date,
+               updated_date,
+               question_title,
+               question_content,
+               status,
+               member_id,
+               category_id
+        from tbl_question
         where member_id = #{memberId} and status = 1
         order by id desc
         limit #{pagination.rowCount}
@@ -96,16 +104,30 @@
         from tbl_question q
         join tbl_answer a on q.id = a.question_id
         join tbl_answer_reply ar on a.id = ar.answer_id
-        where q.id = #{questionId} and q.member_id = #{memberId} and q.status = 1 and a.status = 1 and ar.status = 1
+        where q.id = #{questionId}
+          and q.member_id = #{memberId}
+          and q.status = 1
+          and a.status = 1
+          and ar.status = 1
     </select>
 
     <select id="selectMyAnswer" resultType="myAnswerDTO">
-        select a.id, a.created_date, a.updated_date, question_title, question_content, answer_content, a.status, a.member_id, question_id from tbl_question q
+        select a.id,
+               a.created_date,
+               a.updated_date,
+               question_title,
+               question_content,
+               answer_content,
+               a.status,
+               a.member_id,
+               question_id
+        from tbl_question q
         join tbl_answer a on q.id = a.question_id
-        where a.member_id = #{memberId} and a.status = 1 and q.status =1
+        where a.member_id = #{memberId}
+          and a.status = 1
+          and q.status = 1
         order by id desc
-        limit #{pagination.rowCount}
-        offset #{pagination.startRow}
+        limit #{pagination.rowCount} offset #{pagination.startRow}
     </select>
 
     <select id="answerLikeCount" resultType="int">
@@ -133,7 +155,7 @@
 
     <select id="selectCareer" resultType="careerDTO">
         select id, company_name, member_position, career_start, career_end, description, career_url, status, member_id from tbl_career
-        where member_id = #{memberId}
+        where member_id = #{memberId} and status = 1
     </select>
 
     <select id="selectCareerIndustry" resultType="careerIndustryDTO">
@@ -193,4 +215,37 @@
         where career_id = #{careerId} and skill_id = #{skillId}
     </delete>
 
+    <insert id="insertEducation">
+        insert into tbl_education(education_institution, education_course, education_start, education_end, education_url, description, member_id)
+        values (#{educationInstitution}, #{educationCourse}, #{educationStart}, #{educationEnd}, #{educationUrl}, #{description}, #{memberId})
+    </insert>
+
+    <select id="selectEducationByMemberId" resultType="educationVO">
+        select id,
+               created_date,
+               updated_date,
+               education_institution,
+               education_course,
+               education_start,
+               education_end,
+               education_url,
+               description,
+               status,
+               member_id
+        from tbl_education
+        where member_id = #{memberId} and status = 1
+    </select>
+
+    <update id="updateEducation">
+        update tbl_education
+        set updated_date = now(),
+            education_institution = #{educationInstitution},
+            education_course = #{educationCourse},
+            education_start = #{educationStart},
+            education_end = #{educationEnd},
+            education_url = #{educationUrl},
+            description = #{description},
+            status = #{status}
+        where id = #{id}
+    </update>
 </mapper>

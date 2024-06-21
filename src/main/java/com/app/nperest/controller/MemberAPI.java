@@ -156,7 +156,7 @@ public class MemberAPI {
     }
 
     @PatchMapping("/update-career")
-    public void updateCareer(@RequestBody CareerUpdateRequest request) {
+    public String updateCareer(@RequestBody CareerUpdateRequest request) {
         System.out.println(request.getCreateCareer());
         System.out.println(request.getListInfo().getAddIndustryList().isEmpty());
         CareerDTO careerDTO = request.getCreateCareer();
@@ -180,6 +180,7 @@ public class MemberAPI {
         if(!listInfo.getRemoveSkillList().isEmpty()){
             for(CareerSkillDTO removeSkill : listInfo.getRemoveSkillList()) {
                 memberService.dropCareerSkills(removeSkill);
+                memberService.dropCareerSkills(removeSkill);
             }
         }
 
@@ -188,10 +189,48 @@ public class MemberAPI {
         careerDTO.setCareerSkills(memberService.getCareerSkillByCareerId(careerDTO.getId()));
         System.out.println(careerDTO);
         memberService.modifyMemberCareer(careerDTO);
+        return "ok";
     }
 
     @DeleteMapping("/delete-career")
-    public void deleteCareer(@RequestBody CareerDTO careerDTO) {
-        System.out.println(careerDTO);
+    public String deleteCareer(@RequestBody CareerDTO careerDTO) {
+        careerDTO.setStatus(false);
+        if(!careerDTO.getCareerIndustries().isEmpty()){
+            for(CareerIndustryDTO careerIndustryDTO : careerDTO.getCareerIndustries()){
+                memberService.dropCareerIndustries(careerIndustryDTO);
+            }
+        }
+        if(!careerDTO.getCareerSkills().isEmpty()){
+            for(CareerSkillDTO careerSkillDTO : careerDTO.getCareerSkills()){
+                memberService.dropCareerSkills(careerSkillDTO);
+            }
+        }
+        memberService.modifyMemberCareer(careerDTO);
+
+        return "ok";
+    }
+
+    @GetMapping("/education-list")
+    public List<EducationVO> getEducation(Long memberId){
+        return memberService.getEducationByMemberId(memberId);
+    }
+
+    @PostMapping("/create-education")
+    public void createEducation(@RequestBody EducationVO educationVO){
+        memberService.createEducation(educationVO);
+    }
+
+    @PatchMapping("/update-education")
+    public String modifyEducation(@RequestBody EducationVO educationVO){
+        educationVO.setStatus(true);
+        memberService.modifyEducation(educationVO);
+        return "ok";
+    }
+
+    @DeleteMapping("/delete-education")
+    public String dropEducation(@RequestBody EducationVO educationVO){
+        educationVO.setStatus(false);
+        memberService.modifyEducation(educationVO);
+        return "ok";
     }
 }
