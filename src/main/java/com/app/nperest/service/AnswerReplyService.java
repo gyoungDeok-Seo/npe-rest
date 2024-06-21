@@ -16,4 +16,6 @@ public interface AnswerReplyService {
     public List<MemberVO> selectLikeUserList(AnswerReplyVO answerReplyVO);
 
     public boolean replyLike(AnswerReplyVO answerReplyVO);
+
+    public int selectReplyCount(Long answerId);
 }

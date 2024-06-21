@@ -58,5 +58,10 @@ public class AnswerReplyServiceImpl implements AnswerReplyService {
             return statusBoolean;
         }
     }
+
+    @Override
+    public int selectReplyCount(Long answerId) {
+        return answerReplyDAO.selectReplyCount(answerId);
+    }
 }
 

@@ -5,6 +5,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 //@Component
 //이 클래스를 빈(Bean)으로 관리
 //클래스의 인스턴스를 자동으로 생성
@@ -15,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class QnaVO extends Period {
+public class QnaVO extends Period implements Serializable {
     private Long id;
     private String questionTitle;
     private String questionContent;

@@ -5,11 +5,13 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 @Component
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class AnswerReplyDTO {
+public class AnswerReplyDTO extends Period implements Serializable {
     private Long id;
     private String replayContent;
     private boolean status;

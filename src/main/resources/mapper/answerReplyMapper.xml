@@ -86,4 +86,11 @@
           AND reply_id = #{id}
     </select>
 
+    <select id="selectReplyCount" resultType="int">
+        select count(id)
+        from tbl_answer_reply
+        where answer_id = #{answerId}
+          and status = 1
+    </select>
+
 </mapper>

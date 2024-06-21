@@ -42,14 +42,28 @@ public class QnaServiceImpl implements QnaService {
     }
 
     @Override
-    public List<QnaDTO> selectList(QnaDTO qnaDTO) {
-        qnaDTO.paging();
-        return qnaDAO.selectList(qnaDTO);
+    public List<QnaDTO> selectQnaList() {
+        return qnaDAO.selectQnaList();
     }
+
     @Override
     public QnaDetailDTO selectDetail(QnaDetailDTO qnaDetailDTO) {
         return qnaDAO.selectDetail(qnaDetailDTO);
     }
 
+    @Override
+    public List<CategoryVO> selectCategoryList() {
+        return qnaDAO.selectCategoryList();
+    }
+
+    @Override
+    public List<QnaDTO> selectTopTen() {
+        return qnaDAO.selectTopTen();
+    }
+
+    @Override
+    public List<QnaDTO> selectBestAnswer() {
+        return qnaDAO.selectBestAnswer();
+    }
 
 }

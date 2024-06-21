@@ -24,13 +24,23 @@ public class QnaDAO {
         qnaMapper.insertTag(tagVO);
     }
 
-    public List<QnaDTO> selectList(QnaDTO qnaDTO) {
-        return qnaMapper.selectList(qnaDTO);
+    public List<QnaDTO> selectQnaList(){
+         return qnaMapper.selectQnaList();
     }
 
     public QnaDetailDTO selectDetail(QnaDetailDTO qnaDetailDTO) {
         return qnaMapper.selectDetail(qnaDetailDTO);
     }
 
+    public List<CategoryVO> selectCategoryList() {
+        return qnaMapper.selectCategoryList();
+    }
 
+    public List<QnaDTO> selectTopTen() {
+        return qnaMapper.selectTopTen();
+    }
+
+    public List<QnaDTO> selectBestAnswer() {
+        return qnaMapper.selectBestAnswer();
+    }
 }

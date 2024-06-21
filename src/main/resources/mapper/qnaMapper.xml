@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.nperest.mapper.QnaMapper">
     <insert id="insertQna">
-        INSERT INTO tbl_question (question_title, question_content, status, category_id, member_id)
+        insert INTO tbl_question (question_title, question_content, status, category_id, member_id)
         VALUES (#{questionTitle}, #{questionContent}, #{status}, #{categoryId}, #{memberId})
         <selectKey keyProperty="id" resultType="Long">
             SELECT LAST_INSERT_ID()
@@ -10,78 +10,73 @@
     </insert>
 
     <insert id="insertFile">
-        INSERT INTO tbl_file (file_name, file_path, question_id)
+        insert INTO tbl_file (file_name, file_path, question_id)
         VALUES (#{fileName}, #{filePath}, #{questionId})
     </insert>
 
     <insert id="insertTag">
-        INSERT INTO tbl_tag (tag_name, status, question_id)
+        insert INTO tbl_tag (tag_name, status, question_id)
         VALUES (#{tagName}, #{status}, #{questionId})
     </insert>
 
-<!--    <select id="selectList" resultType="qnaDTO" parameterType="qnaDTO">-->
-<!--        SELECT-->
-<!--        id,-->
-<!--        question_title,-->
-<!--        question_content,-->
-<!--        status,-->
-<!--        category_id,-->
-<!--        member_id,-->
-<!--        created_date,-->
-<!--        updated_date,-->
-<!--        (SELECT count(*) from tbl_answer where question_id = id) as answerCnt,-->
-<!--        (SELECT group_concat(tag_name SEPARATOR ',') from tbl_tag where question_id = id) as returnTag-->
-<!--        FROM tbl_question-->
-<!--        WHERE 1 = 1-->
-<!--        <if test="categoryId != null and categoryId != ''">-->
-<!--            and category_id = #{categoryId}-->
-<!--        </if>-->
-<!--        <if test="questionTitle != null and questionTitle != ''">-->
-<!--            and (-->
-<!--            question_title like concat("%",#{questionTitle},"%")-->
-<!--            or question_content like concat("%",#{questionContent},"%")-->
-<!--            )-->
-<!--        </if>-->
-<!--        <if test="flag != null and flag != ''">-->
-<!--            and answerCnt = 0-->
-<!--        </if>-->
-<!--        and status = 1-->
-<!--        order by created_date desc-->
-<!--        limit #{start}, #{offset}-->
-<!--    </select>-->
-    <select id="selectList" resultType="QnaDTO" parameterType="QnaDTO">
-        SELECT q.id AS id,
-        q.question_title,
-        q.question_content,
-        q.created_date AS createdDate,
-        q.updated_date AS updatedDate,
-        q.status AS status,
-        m.id AS memberId,
-        m.kakao_profile_url AS kakaoProfileUrl,
-        m.member_name AS memberName,
-        m.member_position AS memberPosition,
-        GROUP_CONCAT(DISTINCT t.tag_name) AS tags,
-        COUNT(DISTINCT a.id) AS answerCnt,
-        COUNT(DISTINCT ar.id) AS replyCnt
-        FROM tbl_question q
-        LEFT JOIN tbl_member m ON q.member_id = m.id
-        LEFT JOIN tbl_tag t ON q.id = t.question_id
-        LEFT JOIN tbl_answer a ON q.id = a.question_id
-        LEFT JOIN tbl_answer_reply ar ON a.id = ar.answer_id
-        WHERE
-        <if test="tags != null and tags.size() > 0">
-            EXISTS (
-            SELECT 1 FROM tbl_tag t WHERE t.question_id = q.id AND t.tag_name IN
-            <foreach item="tag" collection="tags" open="(" separator="," close=")">
-                #{tag.tagName}
-            </foreach>
-            )
-        </if>
-        GROUP BY q.id, q.question_title, q.question_content, q.created_date, q.updated_date, q.status,
-        m.id, m.kakao_profile_url, m.kakao_email, m.member_name, m.member_position, m.member_intro, m.status
-        ORDER BY q.id
-        LIMIT #{start}, #{pageSize};
+    <select id="selectCategoryList" resultType="CategoryVO">
+        select id, category_name, category_value
+        from tbl_category
     </select>
+
+    <select id="selectTopTen" resultType="QnaDTO">
+        select subquery.id, subquery.created_date, question_title, hits, answerCnt
+        from (select q.id, q.created_date, question_title, hits, count(a.id) as answerCnt
+              from tbl_question q
+                       left join tbl_answer a on q.id = a.question_id and a.status = 1
+              where date(q.created_date) = curdate()
+                and q.status = 1
+              group by q.id) as subquery
+        order by hits desc
+        limit 10;
+    </select>
+
+    <select id="selectBestAnswer" resultType="QnaDTO">
+        select q.id,
+               q.question_title,
+               coalesce(count(distinct a.id), 0) as answerCnt,
+               coalesce(max(al.like_count), 0)   as maxLikeCnt
+        from tbl_question q
+                 left join tbl_answer a on q.id = a.question_id and a.status = 1
+                 left join (select answer_id, count(*) as like_count
+                            from tbl_answer_like
+                            where status = 1
+                            group by answer_id) al on a.id = al.answer_id
+        where q.status = 1
+        group by q.id, q.question_title
+        order by maxLikeCnt desc
+        limit 12;
+    </select>
+
+    <select id="selectQnaList" resultType="QnaDTO" parameterType="QnaDTO">
+        SELECT q.id,
+               q.question_title,
+               q.question_content,
+               q.status,
+               q.category_id,
+               q.member_id,
+               q.created_date,
+               m.member_name,
+               m.member_position,
+               q.hits,
+               COUNT(DISTINCT a.id) AS answerCnt
+        FROM tbl_question q
+                 LEFT JOIN tbl_member m ON q.member_id = m.id
+                 LEFT JOIN tbl_answer a ON q.id = a.question_id AND a.status = 1
+        WHERE q.status = 1
+          AND m.status = 1
+        GROUP BY q.id, q.question_title, q.question_content, q.status, q.category_id, q.member_id, q.created_date,
+                 m.member_name, m.member_position, q.hits
+        order by q.id desc
+    </select>
+
+
+
     <select id="selectDetail" resultType="qnaDetailDTO" parameterType="qnaDetailDTO">
         SELECT q.id,
                q.question_title,

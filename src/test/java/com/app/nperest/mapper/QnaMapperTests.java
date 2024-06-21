@@ -1,5 +1,6 @@
 package com.app.nperest.mapper;
 
+import com.app.nperest.domain.CategoryVO;
 import com.app.nperest.domain.FileVO;
 import com.app.nperest.domain.QnaDTO;
 import com.app.nperest.domain.TagVO;
@@ -8,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 @SpringBootTest
 @Slf4j
 public class QnaMapperTests {
@@ -15,7 +18,7 @@ public class QnaMapperTests {
     private QnaMapper qnaMapper;
 
     @Test
-    public void insertTest(){
+    public void insertTest() {
         QnaDTO qnaDTO = new QnaDTO();
         qnaDTO.setQuestionTitle("제목");
         qnaDTO.setQuestionContent("내용");
@@ -39,5 +42,15 @@ public class QnaMapperTests {
 
         qnaMapper.insertTag(tagVO);
 
+    }
+
+    @Test
+    public void selectCategoryListTest() {
+        System.out.println(qnaMapper.selectCategoryList());
+    }
+
+    @Test
+    public void selectTopTenTest() {
+        System.out.println(qnaMapper.selectTopTen());
     }
 }
