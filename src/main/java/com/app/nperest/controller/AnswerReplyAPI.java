@@ -51,10 +51,6 @@ public class AnswerReplyAPI {
 
     @PostMapping("/likeList")
     public Map<String, Object> likeList(HttpSession session, @RequestBody AnswerReplyVO answerReplyVO) {
-        /* 답글 좋아요 사용자 리스트 조회
-        json으로 보내야 하는 변수명 : 실제 필요값
-        id : answerId
-        */
         List<MemberVO> list = answerReplyService.selectLikeUserList(answerReplyVO);
         Map<String, Object> response = new HashMap<>();
         response.put("successMsg", true);

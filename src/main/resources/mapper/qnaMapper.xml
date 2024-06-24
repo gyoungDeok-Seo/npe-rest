@@ -133,9 +133,6 @@
                 </trim>
                 )
             </when>
-            <otherwise>
-                left join tbl_tag t on surbquery.id = t.question_id
-            </otherwise>
         </choose>
         order by surbquery.id desc
         limit #{pagination.rowCount}
