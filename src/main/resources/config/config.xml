@@ -6,6 +6,7 @@
     </settings>
     <typeAliases>
         <typeAlias type="com.app.nperest.domain.MemberVO" alias="memberVO"/>
+        <typeAlias type="com.app.nperest.domain.SearchMemberDTO" alias="searchMemberDTO"/>
         <typeAlias type="com.app.nperest.domain.QnaVO" alias="qnaVO"/>
         <typeAlias type="com.app.nperest.domain.FileVO" alias="fileVO"/>
         <typeAlias type="com.app.nperest.domain.AnswerVO" alias="answerVO"/>
@@ -18,7 +19,7 @@
         <typeAlias type="com.app.nperest.domain.SkillVO" alias="skillVO"/>
         <typeAlias type="com.app.nperest.domain.CategoryVO" alias="categoryVO"/>
         <typeAlias type="com.app.nperest.domain.MemberSkillDTO" alias="memberSkillDTO"/>
-        <typeAlias type="com.app.nperest.domain.MyQuestionDTO" alias="myQuestionDTO"/>
+        <typeAlias type="com.app.nperest.domain.QuestionDTO" alias="questionDTO"/>
         <typeAlias type="com.app.nperest.domain.MyAnswerDTO" alias="myAnswerDTO"/>
         <typeAlias type="com.app.nperest.domain.AnswerLikeVO" alias="answerLikeVO"/>
         <typeAlias type="com.app.nperest.domain.CareerVO" alias="careerVO"/>

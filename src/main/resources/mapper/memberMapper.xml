@@ -72,7 +72,7 @@
         order by skill_name
     </select>
 
-    <select id="selectMyQuestions" resultType="myQuestionDTO">
+    <select id="selectMyQuestions" resultType="QuestionDTO">
         select id,
                created_date,
                updated_date,
@@ -156,6 +156,7 @@
     <select id="selectCareer" resultType="careerDTO">
         select id, company_name, member_position, career_start, career_end, description, career_url, status, member_id from tbl_career
         where member_id = #{memberId} and status = 1
+        order by career_start desc
     </select>
 
     <select id="selectCareerIndustry" resultType="careerIndustryDTO">

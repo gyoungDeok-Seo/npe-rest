@@ -8,13 +8,12 @@ import lombok.ToString;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.List;
 
 @ApiModel(description = "회원 정보")
 @Component @Getter @Setter
 @ToString(callSuper = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class MyQuestionDTO extends Period implements Serializable {
+public class QuestionDTO extends Period implements Serializable {
     private Long id;
     private String questionTitle;
     private String questionContent;

@@ -72,10 +72,10 @@ public class MemberMapperTests {
         Pagination pagination = new Pagination();
         pagination.setPage(1);
         pagination.setTotal(memberMapper.countMyQuestions(2L));
-        pagination.progress();
+        pagination.progress(20);
 
-        List<MyQuestionDTO> myQuestionDTOs = memberMapper.selectMyQuestions(2L, pagination);
-        log.info("MyQuestionDTO: {}", myQuestionDTOs);
+        List<QuestionDTO> questionDTOS = memberMapper.selectMyQuestions(2L, pagination);
+        log.info("MyQuestionDTO: {}", questionDTOS);
     }
 
     @Test
