@@ -69,8 +69,8 @@ public class MemberDAO {
         return memberMapper.selectMyAnswer(memberId, pagination);
     };
 //    회원이 작성한 답글에 대한 좋아요 수 조회
-    public int answerLikeCount(Long memberId, Long answerId){
-        return memberMapper.answerLikeCount(memberId, answerId);
+    public int answerLikeCount(Long answerId){
+        return memberMapper.answerLikeCount(answerId);
     };
 //    회원이 작성한 답글에 대한 댓글 수 조회
     public int answerReplyCount(Long memberId, Long answerId){

@@ -91,7 +91,7 @@ public class MemberMapperTests {
         Long memberId = 2L;
         Long answerId = 74L;
 
-        log.info("answerLikeCount: {}", memberMapper.answerLikeCount(memberId, answerId));
+        log.info("answerLikeCount: {}", memberMapper.answerLikeCount(answerId));
     }
     @Test
     public void insertCareerTest() {

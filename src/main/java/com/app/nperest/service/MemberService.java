@@ -35,7 +35,7 @@ public interface MemberService {
 //    회원 질문 조회
     public List<MyAnswerDTO> getMyAnswers(Long memberId, Pagination pagination);
 //    회원이 작성한 답글에 대한 좋아요 수 조회
-    public int getAnswerLikeCount(Long memberId, Long answerId);
+    public int getAnswerLikeCount(Long answerId);
 //    회원이 작성한 답글에 대한 댓글 수 조회
     public int getAnswerReplyCount(Long memberId, Long answerId);
 //    회원이 작성한 답글의 전체 수 조회
