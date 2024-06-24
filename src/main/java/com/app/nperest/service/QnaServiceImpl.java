@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -72,14 +71,13 @@ public class QnaServiceImpl implements QnaService {
         if(tags.get(0).isEmpty()){
             tags = new ArrayList<String>();
         }
-
-        pagination.progress();
+        pagination.progress(10);
         return qnaDAO.selectQnaList(tags, category, pagination);
     }
 
     @Override
     public List<QnaDTO> selectTagQnaList(String tag, Pagination pagination) {
-        pagination.progress();
+        pagination.progress(10);
         return qnaDAO.selectTagQnaList(tag, pagination);
     }
 

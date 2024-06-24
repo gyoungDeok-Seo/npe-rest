@@ -1,7 +1,6 @@
 package com.app.nperest.repository;
 
 import com.app.nperest.domain.*;
-import com.app.nperest.mapper.AnswerMapper;
 import com.app.nperest.mapper.AnswerReplyMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

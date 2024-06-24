@@ -1,7 +1,6 @@
 package com.app.nperest.repository;
 
 import com.app.nperest.domain.FileVO;
-import com.app.nperest.domain.QnaDTO;
 import com.app.nperest.mapper.FileMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

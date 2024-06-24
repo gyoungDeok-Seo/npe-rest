@@ -8,7 +8,6 @@ import lombok.ToString;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.time.YearMonth;
 
 @ApiModel(description = "회원 정보")
 @Component @Getter @Setter

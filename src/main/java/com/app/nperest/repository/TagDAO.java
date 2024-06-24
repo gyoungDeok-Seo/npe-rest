@@ -1,7 +1,6 @@
 package com.app.nperest.repository;
 
 import com.app.nperest.domain.TagVO;
-import com.app.nperest.mapper.QnaMapper;
 import com.app.nperest.mapper.TagMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

@@ -8,7 +8,6 @@ import lombok.ToString;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.List;
 
 @ApiModel(description = "회원 정보")
 @Component @Getter @Setter

@@ -3,7 +3,6 @@ package com.app.nperest.service;
 import com.app.nperest.domain.*;
 
 import java.util.List;
-import java.util.Map;
 
 public interface QnaService {
     public void insert(QnaDTO qnaDTO);
