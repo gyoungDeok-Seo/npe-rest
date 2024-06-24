@@ -27,4 +27,6 @@ public interface AnswerReplyMapper {
     public Map<String, Object> isLikeExist(AnswerReplyLikeDTO answerReplyLikeDTO);
 
     public int selectReplyCount(Long answerId);
+
+    public void insertProfanity(ReplyAi replyAi);
 }

@@ -99,4 +99,9 @@
           and status = 1
     </select>
 
+    <insert id="insertProfanity">
+        insert into tbl_reply_ai (comment, target)
+        values (#{comment}, #{target})
+    </insert>
+
 </mapper>

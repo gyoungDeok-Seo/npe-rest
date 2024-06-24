@@ -55,4 +55,8 @@ public class AnswerReplyDAO {
     public int selectReplyCount(Long answerId) {
         return answerReplyMapper.selectReplyCount(answerId);
     }
+
+    public void insertProfanity(ReplyAi replyAi){
+        answerReplyMapper.insertProfanity(replyAi);
+    }
 }
