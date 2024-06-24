@@ -24,7 +24,6 @@ public class SearchAPI {
 
     @GetMapping("/question-list")
     public List<QuestionDTO> getQuestionList(Search search, Pagination pagination) {
-        System.out.println(pagination);
         return searchMemberService.getSearchQuestionByKeyword(search, pagination);
     }
 

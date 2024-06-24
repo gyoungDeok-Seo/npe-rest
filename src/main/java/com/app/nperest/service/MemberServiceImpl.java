@@ -42,7 +42,7 @@ public class MemberServiceImpl implements MemberService {
             result = member.getId();
         }
         MemberVO sessionMember = getMemberById(result).get();
-        System.out.println("Setting session attribute: " + sessionMember);
+
         session.setAttribute("member", sessionMember);
     }
 //    회원 정보 조회
@@ -54,7 +54,9 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Optional<MemberVO> getMemberById(Long id){
         MemberVO member = (MemberVO) session.getAttribute("member");
-
+        if(member == null && id == null){
+            return Optional.empty();
+        }
         if(id == null){
             return memberDAO.findById(member.getId());
         }
@@ -130,7 +132,7 @@ public class MemberServiceImpl implements MemberService {
         List<MyAnswerDTO> myAnswerList = memberDAO.findMyAnswer(memberId, pagination);
 
         for (MyAnswerDTO myAnswer : myAnswerList){
-            myAnswer.setAnswerLikeCount(getAnswerLikeCount(memberId, myAnswer.getId()));
+            myAnswer.setAnswerLikeCount(getAnswerLikeCount(myAnswer.getId()));
             myAnswer.setAnswerReplyCount(getAnswerReplyCount(memberId, myAnswer.getId()));
             myAnswer.setMyAnswerTotalCount(getCountMyAnswer(memberId));
         }
@@ -139,8 +141,8 @@ public class MemberServiceImpl implements MemberService {
     };
 //    회원이 작성한 답글에 대한 좋아요 수 조회
     @Override
-    public int getAnswerLikeCount(Long memberId, Long answerId){
-        return memberDAO.answerLikeCount(memberId, answerId);
+    public int getAnswerLikeCount(Long answerId){
+        return memberDAO.answerLikeCount(answerId);
     };
 //    회원이 작성한 답글에 대한 댓글 수 조회
     @Override

@@ -133,7 +133,7 @@
     <select id="answerLikeCount" resultType="int">
         select count(al.id) from tbl_answer a
         join tbl_answer_like al on a.id = al.answer_id
-        where a.member_id = #{memberId} and a.id = #{answerId} and a.status = 1 and al.status = 1
+        where a.id = #{answerId} and a.status = 1 and al.status = 1
     </select>
 
     <select id="answerReplyCount" resultType="int">

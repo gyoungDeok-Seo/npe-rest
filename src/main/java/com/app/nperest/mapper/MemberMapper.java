@@ -37,7 +37,7 @@ public interface MemberMapper {
 //    회원 질문 조회
     public List<MyAnswerDTO> selectMyAnswer(Long memberId, Pagination pagination);
 //    회원이 작성한 답글에 대한 좋아요 수 조회
-    public int answerLikeCount(Long memberId, Long answerId);
+    public int answerLikeCount(Long answerId);
 //    회원이 작성한 답글에 대한 댓글 수 조회
     public int answerReplyCount(Long memberId, Long answerId);
 //    회원이 작성한 답글의 전체 수 조회

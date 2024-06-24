@@ -24,19 +24,29 @@ public class MemberAPI {
     @GetMapping("/session")
     public Map<String, Object> getSessionInfo(HttpSession session, Long memberId) {
         MemberVO sessionMember = (MemberVO) session.getAttribute("member");
-
         Optional<MemberVO> foundMember = memberService.getMemberById(memberId);
-        MemberVO member = foundMember.get();
-
         Map<String, Object> response = new HashMap<>();
-        boolean same = sessionMember.getId().equals(member.getId());
-        response.put("member", member);
-        response.put("same", same);
-        if(sessionMember != null){
-            response.put("loggedIn", true);
-        }else {
-            response.put("loggedIn", false);
+
+        if(foundMember.isPresent()){
+            MemberVO member = foundMember.get();
+            response.put("member", member);
+            boolean same = false;
+
+
+            if(sessionMember != null){
+                response.put("loggedIn", true);
+                same = sessionMember.getId().equals(member.getId());
+            }else {
+                response.put("loggedIn", false);
+            }
+            response.put("same", same);
+
+            return response;
         }
+
+        response.put("member", new MemberVO());
+        response.put("same", false);
+        response.put("loggedIn", false);
 
         return response;
     }
@@ -120,6 +130,7 @@ public class MemberAPI {
     public Map<String, Object> modifyAnswerLike(HttpSession session, @RequestParam Long answerId) {
         AnswerLikeVO answerLikeVO = new AnswerLikeVO();
         Map<String, Object> response = new HashMap<>();
+
         MemberVO member = (MemberVO) session.getAttribute("member");
         Optional<AnswerLikeVO> foundAnswerLike = memberService.getAnswerLike(member.getId(), answerId);
 
@@ -133,7 +144,7 @@ public class MemberAPI {
             memberService.creatAnswerLike(answerLikeVO);
         }
 
-        int answerLikeCount = memberService.getAnswerLikeCount(member.getId(), answerId);
+        int answerLikeCount = memberService.getAnswerLikeCount(answerId);
         foundAnswerLike = memberService.getAnswerLike(member.getId(), answerId);
 
         response.put("answerLikeCount", answerLikeCount);
@@ -149,14 +160,11 @@ public class MemberAPI {
 
     @PostMapping("/create-career")
     public void createCareer(@RequestBody CareerDTO careerDTO) {
-//        System.out.println(careerDTO.getCareerSkills());
         memberService.createCareer(careerDTO);
     }
 
     @PatchMapping("/update-career")
     public String updateCareer(@RequestBody CareerUpdateRequest request) {
-        System.out.println(request.getCreateCareer());
-        System.out.println(request.getListInfo().getAddIndustryList().isEmpty());
         CareerDTO careerDTO = request.getCreateCareer();
         ModifyCareerInListInfo listInfo = request.getListInfo();
 
@@ -185,7 +193,6 @@ public class MemberAPI {
         careerDTO.setStatus(true);
         careerDTO.setCareerIndustries(memberService.getCareerIndustryByCareerId(careerDTO.getId()));
         careerDTO.setCareerSkills(memberService.getCareerSkillByCareerId(careerDTO.getId()));
-        System.out.println(careerDTO);
         memberService.modifyMemberCareer(careerDTO);
         return "ok";
     }
