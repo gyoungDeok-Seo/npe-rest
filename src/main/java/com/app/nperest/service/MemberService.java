@@ -25,7 +25,7 @@ public interface MemberService {
 //    회원 기술 삭제
     public void dropMemberSkill(MemberSkillDTO memberSkillDTO);
 //    회원 질문 조회
-    public List<MyQuestionDTO> getMyQuestions(Long memberId, Pagination pagination);
+    public List<QuestionDTO> getMyQuestions(Long memberId, Pagination pagination);
 //    회원 총 질문 수 조회
     public int countMyQuestions(Long memberId);
 //    질문에 대한 총 답변 수 조회

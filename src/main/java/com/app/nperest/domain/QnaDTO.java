@@ -21,6 +21,7 @@ public class QnaDTO extends Period implements Serializable {
     private Long memberId;
     private String memberName;
     private String memberPosition;
+    private String kakaoProfileUrl;
     private List<FileVO> files;
     private List<TagVO> tags;
     private int hits;

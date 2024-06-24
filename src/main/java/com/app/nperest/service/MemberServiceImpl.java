@@ -91,13 +91,13 @@ public class MemberServiceImpl implements MemberService {
     };
 //    회원 질문 조회
     @Override
-    public List<MyQuestionDTO> getMyQuestions(Long memberId, Pagination pagination){
+    public List<QuestionDTO> getMyQuestions(Long memberId, Pagination pagination){
         pagination.setTotal(countMyQuestions(memberId));
-        pagination.progress();
+        pagination.progress(20);
 
-        List<MyQuestionDTO> myQuestionList = memberDAO.findMyQuestions(memberId, pagination);
+        List<QuestionDTO> myQuestionList = memberDAO.findMyQuestions(memberId, pagination);
 
-        for (MyQuestionDTO myQuestion : myQuestionList) {
+        for (QuestionDTO myQuestion : myQuestionList) {
             myQuestion.setAnswerCount(countAnswerCountForQuestion(myQuestion.getId()));
             myQuestion.setAnswerReplyCount(answerReplyCountForQuestion(memberId, myQuestion.getId()));
             myQuestion.setMyQuestionTotalCount(countMyQuestions(memberId));
@@ -125,7 +125,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<MyAnswerDTO> getMyAnswers(Long memberId, Pagination pagination){
         pagination.setTotal(getCountMyAnswer(memberId));
-        pagination.progress();
+        pagination.progress(10);
 
         List<MyAnswerDTO> myAnswerList = memberDAO.findMyAnswer(memberId, pagination);
 

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.nperest.mapper.SearchMemberMapper">
+    <select id="selectSearchMember" resultType="searchMemberDTO">
+        select id, member_name, kakao_profile_url, member_position from tbl_member
+        where member_name like concat('%', #{search.keyword}, '%') and status = 1
+        order by id desc
+        limit #{pagination.rowCount}
+        offset #{pagination.startRow}
+    </select>
+
+    <select id="selectSearchQuestion" resultType="questionDTO">
+        select id,
+               created_date,
+               question_title,
+               question_content,
+               hits
+        from tbl_question
+        where (question_title like concat('%', #{search.keyword}, '%') or question_content like concat('%', #{search.keyword}, '%')) and status = 1
+        order by id desc
+        limit #{pagination.rowCount}
+        offset #{pagination.startRow}
+    </select>
+
+    <select id="selectQuestionTopTen" resultType="qnaDTO">
+        select q.id, member_name, kakao_profile_url, member_position, question_title from tbl_member m
+        join tbl_question q on m.id = q.member_id and m.status = 1 and q.status = 1
+        where q.created_date &gt;= date_sub(curdate(), interval weekday(curdate()) + 7 day)
+        and q.created_date &lt; date_sub(curdate(), interval weekday(curdate()) day)
+        order by hits desc
+        limit 10
+        offset 0
+    </select>
+</mapper>
