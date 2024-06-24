@@ -20,4 +20,6 @@ public interface AnswerReplyService {
     public void replyLike(AnswerReplyLikeDTO answerReplyLikeDTO);
 
     public int selectReplyCount(Long answerId);
+
+    public void insertProfanity(ReplyAi replyAi);
 }

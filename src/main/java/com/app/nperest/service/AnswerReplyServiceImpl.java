@@ -21,7 +21,7 @@ public class AnswerReplyServiceImpl implements AnswerReplyService {
     }
 
     @Override
-    public List<AnswerReplyDTO> selectReplyList(Long answerId,Long memberId) {
+    public List<AnswerReplyDTO> selectReplyList(Long answerId, Long memberId) {
         List<AnswerReplyDTO> list = answerReplyDAO.selectReplyList(answerId);
         for (AnswerReplyDTO answerReplyDTO : list) {
             answerReplyDTO.setMemberLiked(answerReplyDAO.isLike(answerReplyDTO.getId(), memberId));
@@ -65,6 +65,11 @@ public class AnswerReplyServiceImpl implements AnswerReplyService {
     @Override
     public int selectReplyCount(Long answerId) {
         return answerReplyDAO.selectReplyCount(answerId);
+    }
+
+    @Override
+    public void insertProfanity(ReplyAi replyAi) {
+        answerReplyDAO.insertProfanity(replyAi);
     }
 }
 

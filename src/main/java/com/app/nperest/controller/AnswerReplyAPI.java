@@ -78,4 +78,10 @@ public class AnswerReplyAPI {
         }
         return list;
     }
+
+    @PostMapping("/create-profanity")
+    public void insertProfanity(ReplyAi replyAi) {
+        System.out.println(replyAi);
+//        answerReplyService.insertProfanity(replyAi);
+    }
 }
