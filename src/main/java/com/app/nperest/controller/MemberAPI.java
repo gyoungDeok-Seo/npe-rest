@@ -4,7 +4,6 @@ import com.app.nperest.domain.*;
 import com.app.nperest.service.MemberService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -91,9 +90,8 @@ public class MemberAPI {
     }
 
     @GetMapping("/my-question-list")
-    public List<MyQuestionDTO> getMyQuestions(Long memberId, Pagination pagination) {
+    public List<QuestionDTO> getMyQuestions(Long memberId, Pagination pagination) {
 //        MemberVO member = (MemberVO) session.getAttribute("member");
-
         return memberService.getMyQuestions(memberId, pagination);
     }
 

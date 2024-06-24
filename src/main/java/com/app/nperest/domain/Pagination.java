@@ -21,9 +21,9 @@ public class Pagination {
     private boolean prev, next;
     private int total;
 
-    public void progress() {
+    public void progress(int rowCount) {
         this.page = page == null ? 1 : page;
-        this.rowCount = 10;
+        this.rowCount = rowCount;
         this.pageCount = 10;
         this.endRow = page * rowCount;
         this.startRow = endRow - rowCount;

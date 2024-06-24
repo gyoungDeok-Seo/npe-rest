@@ -252,3 +252,123 @@ where a.member_id = 2 and a.status = 1
 order by id desc
 limit 20
 offset 0;
+
+select surbquery.id,
+       surbquery.question_title,
+       surbquery.question_content,
+       surbquery.status,
+       surbquery.category_id,
+       surbquery.member_id,
+       surbquery.created_date,
+       surbquery.member_name,
+       surbquery.member_position,
+       surbquery.hits,
+       answerCnt
+from
+(
+SELECT q.id,
+       q.question_title,
+       q.question_content,
+       q.status,
+       q.category_id,
+       q.member_id,
+       q.created_date,
+       m.member_name,
+       m.member_position,
+       q.hits,
+       COUNT(DISTINCT a.id) AS answerCnt
+FROM tbl_question q
+JOIN tbl_member m ON q.member_id = m.id AND m.status = 1
+LEFT JOIN tbl_answer a ON q.id = a.question_id AND a.status = 1
+# JOIN tbl_tag t ON t.id = t.question_id AND t.tag_name in ('react')
+WHERE q.status = 1
+and q.category_id = (
+    select id from tbl_category
+    where category_value = 'java'
+)
+GROUP BY q.id, q.question_title, q.question_content, q.status, q.category_id, q.member_id, q.created_date, m.member_name, m.member_position, q.hits
+) as surbquery
+JOIN tbl_tag t ON surbquery.id = t.question_id AND t.tag_name like concat('%','','%')
+GROUP BY surbquery.id
+ORDER BY surbquery.id DESC;
+
+SELECT q.id,
+       q.question_title,
+       q.question_content,
+       q.status,
+       q.category_id,
+       q.member_id,
+       q.created_date,
+       m.member_name,
+       m.member_position,
+       q.hits,
+       COUNT(DISTINCT a.id) AS answerCnt
+FROM tbl_question q
+JOIN tbl_member m ON q.member_id = m.id AND m.status = 1
+LEFT JOIN tbl_answer a ON q.id = a.question_id AND a.status = 1
+JOIN tbl_tag t ON t.id = t.question_id AND t.tag_name like concat('%','','%')
+WHERE q.status = 1
+and q.category_id = (
+    select id from tbl_category
+    where category_value = 'c'
+)
+GROUP BY q.id, q.question_title, q.question_content, q.status, q.category_id, q.member_id, q.created_date, m.member_name, m.member_position, q.hits;
+
+<select id="selectQnaList" resultType="QnaDTO">
+SELECT q.id,
+       q.question_title,
+       q.question_content,
+       q.status,
+       q.category_id,
+       q.member_id,
+       q.created_date,
+       m.member_name,
+       m.member_position,
+       q.hits,
+       COUNT(DISTINCT a.id) AS answerCnt
+FROM tbl_question q
+         LEFT JOIN tbl_member m ON q.member_id = m.id AND m.status = 1
+         LEFT JOIN tbl_answer a ON q.id = a.question_id AND a.status = 1
+         LEFT JOIN tbl_tag t ON q.id = t.question_id
+WHERE q.status = 1
+  AND m.status = 1
+    <if test="tags != null and tags.size() > 0">
+        AND EXISTS (
+            SELECT 1
+            FROM tbl_tag t2
+            WHERE t2.question_id = q.id
+            AND t2.tag_name IN
+            <foreach item="tagName" index="index" collection="tags" open="(" separator="," close=")">
+                #{tagName}
+            </foreach>
+        )
+    </if>
+    <if test="categoryValue != null">
+        AND q.category_id = (
+            SELECT id
+            FROM tbl_category
+            WHERE category_value = #{categoryValue}
+        )
+    </if>
+GROUP BY q.id, q.question_title, q.question_content, q.status, q.category_id, q.member_id, q.created_date,
+    m.member_name, m.member_position, q.hits
+ORDER BY q.id DESC
+    LIMIT #{pagination.rowCount}
+    OFFSET #{pagination.startRow}
+    </select>
+
+select * from tbl_question
+where category_id = 1;
+
+select id, created_date, question_title, question_content, hits
+from tbl_question
+where (question_title like concat('%', '아니', '%') or question_content like concat('%', '아니', '%')) and status = 1
+order by id desc;
+
+select q.id, member_name, member_position, question_title from tbl_member m
+join tbl_question q on m.id = q.member_id and m.status = 1 and q.status = 1
+where q.created_date >= date_sub(curdate(), interval weekday(curdate()) + 7 day)
+and q.created_date < date_sub(curdate(), interval weekday(curdate()) day)
+order by q.hits desc
+limit 10
+offset 0;

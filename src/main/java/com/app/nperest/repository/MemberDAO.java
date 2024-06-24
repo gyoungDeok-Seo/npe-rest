@@ -49,7 +49,7 @@ public class MemberDAO {
         memberMapper.deleteMemberSkill(memberSkillDTO);
     };
 //    회원 질문 조회
-    public List<MyQuestionDTO> findMyQuestions(Long memberId, Pagination pagination){
+    public List<QuestionDTO> findMyQuestions(Long memberId, Pagination pagination){
         return memberMapper.selectMyQuestions(memberId, pagination);
     };
 //    회원 총 질문 수 조회
