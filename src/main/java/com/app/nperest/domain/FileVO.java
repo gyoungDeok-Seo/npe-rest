@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.Serializable;
 
 @Component

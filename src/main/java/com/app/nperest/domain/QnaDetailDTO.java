@@ -17,8 +17,12 @@ public class QnaDetailDTO extends Period implements Serializable {
     private String questionTitle;
     private String questionContent;
     private boolean status;
+    private int hits;
+    private Long categoryId;
     private String categoryName;
     private String categoryValue;
+    private List<FileVO> files;
+    private List<TagVO> tags;
     private Long memberId;
-    private boolean creater;
+    private boolean master;
 }

@@ -22,8 +22,8 @@ public class AnswerDTO extends Period implements Serializable {
     private int likeCnt;
     private int replyCnt;
     private boolean memberLiked;
+    private boolean master;
     private String memberName;
     private Long questionId;
-    private String flag;
     private List<AnswerReplyDTO> replyList;
 }

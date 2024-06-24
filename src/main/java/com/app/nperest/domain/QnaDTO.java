@@ -18,6 +18,8 @@ public class QnaDTO extends Period implements Serializable {
     private String questionContent;
     private boolean status;
     private Long categoryId;
+    private String categoryName;
+    private String categoryValue;
     private Long memberId;
     private String memberName;
     private String memberPosition;

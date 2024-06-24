@@ -5,17 +5,19 @@ import com.app.nperest.domain.*;
 import java.util.List;
 
 public interface AnswerReplyService {
-    public void insert(AnswerReplyVO answerReplyVO);
+    public void insert(AnswerReplyDTO answerReplyDTO);
 
-    public List<AnswerReplyDTO> selectList(AnswerReplyDTO answerReplyDTO);
+    public List<AnswerReplyDTO> selectReplyList(Long answerId, Long memberId);
 
-    public void update(AnswerReplyVO answerReplyVO);
+    public Boolean isLike(Long replyId, Long memberId);
 
-    public void delete(AnswerReplyVO answerReplyVO);
+    public void update(AnswerReplyDTO answerReplyDTO);
+
+    public void delete(AnswerReplyDTO answerReplyDTO);
 
     public List<MemberVO> selectLikeUserList(AnswerReplyVO answerReplyVO);
 
-    public boolean replyLike(AnswerReplyVO answerReplyVO);
+    public void replyLike(AnswerReplyLikeDTO answerReplyLikeDTO);
 
     public int selectReplyCount(Long answerId);
 }

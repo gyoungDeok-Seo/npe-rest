@@ -1,17 +1,22 @@
 package com.app.nperest.service;
 
-import com.app.nperest.domain.CategoryVO;
-import com.app.nperest.domain.QnaDTO;
-import com.app.nperest.domain.QnaDetailDTO;
+import com.app.nperest.domain.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface QnaService {
     public void insert(QnaDTO qnaDTO);
 
-    public List<QnaDTO> selectQnaList();
+    public void update(QnaDTO qnaDTO);
 
-    public QnaDetailDTO selectDetail(QnaDetailDTO qnaDetailDTO);
+    public void delete(Long id);
+
+    public List<QnaDTO> selectQnaList(List<String> tags, String category, Pagination pagination);
+
+    public List<QnaDTO> selectTagQnaList(String tag, Pagination pagination);
+
+    public QnaDetailDTO selectQnaDetail(Long id);
 
     //메인 화면 카테고리 리스트
     public List<CategoryVO> selectCategoryList();
@@ -19,4 +24,8 @@ public interface QnaService {
     public List<QnaDTO> selectTopTen();
 
     public List<QnaDTO> selectBestAnswer();
+
+    public void incrementHits(Long id);
+
+    public int tagQnaListCount(String tag);
 }

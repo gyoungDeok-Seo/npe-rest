@@ -13,7 +13,7 @@ import java.util.List;
 public class FileDAO {
     private final FileMapper fileMapper;
 
-    public List<FileVO> selectList(FileVO fileVO) {
-        return fileMapper.selectList(fileVO);
+    public List<FileVO> selectFileList(Long id) {
+        return fileMapper.selectFileList(id);
     }
 }

@@ -1,9 +1,6 @@
 package com.app.nperest.service;
 
-import com.app.nperest.domain.AnswerReplyDTO;
-import com.app.nperest.domain.AnswerReplyVO;
-import com.app.nperest.domain.AnswerVO;
-import com.app.nperest.domain.MemberVO;
+import com.app.nperest.domain.*;
 import com.app.nperest.repository.AnswerReplyDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -19,23 +17,34 @@ public class AnswerReplyServiceImpl implements AnswerReplyService {
     private final AnswerReplyDAO answerReplyDAO;
 
     @Override
-    public void insert(AnswerReplyVO answerReplyVO) {
-        answerReplyDAO.insert(answerReplyVO);
+    public void insert(AnswerReplyDTO answerReplyDTO) {
+        answerReplyDAO.insert(answerReplyDTO);
     }
 
     @Override
-    public List<AnswerReplyDTO> selectList(AnswerReplyDTO answerReplyDTO) {
-        return answerReplyDAO.selectList(answerReplyDTO);
+    public List<AnswerReplyDTO> selectReplyList(Long answerId,Long memberId) {
+        List<AnswerReplyDTO> list = answerReplyDAO.selectReplyList(answerId);
+        for (AnswerReplyDTO answerReplyDTO : list) {
+            answerReplyDTO.setMemberLiked(answerReplyDAO.isLike(answerReplyDTO.getId(), memberId));
+            answerReplyDTO.setMaster(Objects.equals(answerReplyDTO.getMemberId(), memberId));
+        }
+        return list;
     }
 
     @Override
-    public void update(AnswerReplyVO answerReplyVO) {
-        answerReplyDAO.update(answerReplyVO);
+    public Boolean isLike(Long replyId, Long memberId) {
+        Boolean isLike = answerReplyDAO.isLike(replyId, memberId);
+        return isLike != null ? isLike : false;
     }
 
     @Override
-    public void delete(AnswerReplyVO answerReplyVO) {
-        answerReplyDAO.delete(answerReplyVO);
+    public void update(AnswerReplyDTO answerReplyDTO) {
+        answerReplyDAO.update(answerReplyDTO);
+    }
+
+    @Override
+    public void delete(AnswerReplyDTO answerReplyDTO) {
+        answerReplyDAO.delete(answerReplyDTO);
     }
 
     @Override
@@ -44,18 +53,13 @@ public class AnswerReplyServiceImpl implements AnswerReplyService {
     }
 
     @Override
-    public boolean replyLike(AnswerReplyVO answerReplyVO) {
-        boolean isLikeExist = !answerReplyDAO.isLikeExist(answerReplyVO).isEmpty();
+    public void replyLike(AnswerReplyLikeDTO answerReplyLikeDTO) {
+        boolean isLikeExist = !answerReplyDAO.isLikeExist(answerReplyLikeDTO).isEmpty();
         if (!isLikeExist) {
-            answerReplyDAO.replyLikeInsert(answerReplyVO);
-            return true; // 답변에 좋아요를 추가했음을 나타냅니다.
+            answerReplyDAO.replyLikeInsert(answerReplyLikeDTO);
         } else {
-            answerReplyDAO.replyLikeUpdate(answerReplyVO);
-            // 데이터베이스에서 갱신된 상태를 가져옵니다.
-            Map<String, Object> likeStatus = answerReplyDAO.isLikeExist(answerReplyVO);
-            Integer statusInteger = (Integer) likeStatus.get("status");
-            boolean statusBoolean = statusInteger != null && statusInteger == 1;
-            return statusBoolean;
+            answerReplyDAO.replyLikeUpdate(answerReplyLikeDTO);
+
         }
     }
 
