@@ -1,70 +1,54 @@
 package com.app.nperest.controller;
 
-import com.app.nperest.domain.AnswerVO;
-import com.app.nperest.domain.MemberVO;
+import com.app.nperest.domain.*;
+import com.app.nperest.service.AnswerReplyService;
 import com.app.nperest.service.AnswerService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/answers/api")
 @RequiredArgsConstructor
 public class AnswerAPI {
     private final AnswerService answerService;
+    private final AnswerReplyService answerReplyService;
 
     @PostMapping("/create")
-    public Map<String, Object> create(HttpSession session, @RequestBody AnswerVO answerVO) {
+    public List<AnswerDTO> create(HttpSession session, @RequestBody AnswerVO answerVO) {
         MemberVO memberVO = (MemberVO) session.getAttribute("member");
         answerVO.setMemberId(memberVO.getId());
-        /* 답글 등록
-        json으로 보내야 하는 변수명 : 실제 필요값
-        answerContent : answerContent
-        questionId : questionId
-        */
+
         answerService.insert(answerVO);
-        Map<String, Object> response = new HashMap<>();
-        response.put("successMsg", true);
-        return response;
+
+        return getAnswerListWithDetails(answerVO.getQuestionId(), memberVO.getId());
+    }
+
+    @GetMapping("/list")
+    public List<AnswerDTO> selectQnaList(HttpSession session, Long id) {
+        MemberVO memberVO = (MemberVO) session.getAttribute("member");
+        return getAnswerListWithDetails(id, memberVO.getId());
     }
 
     @PostMapping("/update")
-    public Map<String, Object> update(HttpSession session, @RequestBody AnswerVO answerVO) {
+    public List<AnswerDTO> update(HttpSession session, @RequestBody AnswerVO answerVO) {
         MemberVO memberVO = (MemberVO) session.getAttribute("member");
         answerVO.setMemberId(memberVO.getId());
-
-        /* 답글 수정
-        json으로 보내야 하는 변수명 : 실제 필요값
-        answerContent : answerContent
-        id : answerId
-        */
-
         answerService.update(answerVO);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("successMsg", true);
-        return response;
+        return getAnswerListWithDetails(answerVO.getQuestionId(), memberVO.getId());
     }
 
     @PostMapping("/delete")
-    public Map<String, Object> delete(HttpSession session, @RequestBody AnswerVO answerVO) {
+    public List<AnswerDTO> delete(HttpSession session, @RequestBody AnswerVO answerVO) {
         MemberVO memberVO = (MemberVO) session.getAttribute("member");
         answerVO.setMemberId(memberVO.getId());
 
-        /* 답글 삭제
-        json으로 보내야 하는 변수명 : 실제 필요값
-        id : answerId
-        */
-
         answerService.delete(answerVO);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("successMsg", true);
-        return response;
+        return getAnswerListWithDetails(answerVO.getQuestionId(), memberVO.getId());
     }
 
     @PostMapping("/likeList")
@@ -80,15 +64,24 @@ public class AnswerAPI {
         return response;
     }
 
-    @PostMapping("/answerLike")
-    public Map<String, Object> answerLike(HttpSession session, @RequestBody AnswerVO answerVO) {
+    @PostMapping("/answer-like")
+    public List<AnswerDTO> answerLike(HttpSession session, @RequestBody AnswerLikeDTO answerLikeDTO) {
         MemberVO memberVO = (MemberVO) session.getAttribute("member");
-        answerVO.setMemberId(memberVO.getId());
+        answerLikeDTO.setMemberId(memberVO.getId());
 
-        boolean status = answerService.answerLike(answerVO);
-        Map<String, Object> response = new HashMap<>();
-        response.put("successMsg", true);
-        response.put("status", status);
-        return response;
+        answerService.answerLike(answerLikeDTO);
+
+        return getAnswerListWithDetails(answerLikeDTO.getQuestionId(), memberVO.getId());
+    }
+
+
+    private List<AnswerDTO> getAnswerListWithDetails(Long questionId, Long memberId) {
+        List<AnswerDTO> list = answerService.selectAnswerList(questionId);
+        for (AnswerDTO answerDTO : list) {
+            answerDTO.setMemberLiked(answerService.isLike(answerDTO.getId(), memberId));
+            answerDTO.setReplyList(answerReplyService.selectReplyList(answerDTO.getId(), memberId));
+            answerDTO.setMaster(Objects.equals(answerDTO.getMemberId(), memberId));
+        }
+        return list;
     }
 }

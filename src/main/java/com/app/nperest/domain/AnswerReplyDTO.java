@@ -16,11 +16,13 @@ public class AnswerReplyDTO extends Period implements Serializable {
     private String replayContent;
     private boolean status;
     private Long memberId;
-    private Long answerId;
+    private String memberName;
     private String memberPosition;
     private String kakaoProfileUrl;
     private int likeCnt;
     private boolean memberLiked;
-    private String memberName;
+    private boolean master;
+    private Long answerId;
+    private Long questionId;
 
 }

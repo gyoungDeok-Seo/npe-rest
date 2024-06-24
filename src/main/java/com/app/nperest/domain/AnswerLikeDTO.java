@@ -10,18 +10,15 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 
 @ApiModel(description = "회원 정보")
-@Component @Getter @Setter
+@Component
+@Getter
+@Setter
 @ToString(callSuper = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class MyAnswerDTO extends Period implements Serializable {
+public class AnswerLikeDTO extends Period implements Serializable {
     private Long id;
-    private String questionTitle;
-    private String questionContent;
-    private String answerContent;
     private boolean status;
-    private int answerLikeCount;
-    private int answerReplyCount;
-    private int myAnswerTotalCount;
     private Long memberId;
+    private Long answerId;
     private Long questionId;
 }

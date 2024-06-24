@@ -15,7 +15,7 @@ public class FileServiceImpl implements FileService{
     private final FileDAO fileDAO;
 
     @Override
-    public List<FileVO> selectList(FileVO fileVO) {
-        return fileDAO.selectList(fileVO);
+    public List<FileVO> selectFileList(Long id) {
+        return fileDAO.selectFileList(id);
     }
 }

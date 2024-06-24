@@ -1,7 +1,6 @@
 package com.app.nperest.repository;
 
 import com.app.nperest.domain.*;
-import com.app.nperest.mapper.AnswerMapper;
 import com.app.nperest.mapper.AnswerReplyMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -15,39 +14,45 @@ import java.util.Map;
 public class AnswerReplyDAO {
     private final AnswerReplyMapper answerReplyMapper;
 
-    public void insert(AnswerReplyVO answerReplyVO) {
-        answerReplyMapper.insert(answerReplyVO);
+    public void insert(AnswerReplyDTO answerReplyDTO) {
+        answerReplyMapper.insert(answerReplyDTO);
     }
 
-    public List<AnswerReplyDTO> selectList(AnswerReplyDTO answerReplyDTO) {
-        return answerReplyMapper.selectList(answerReplyDTO);
+    public List<AnswerReplyDTO> selectReplyList(Long answerId) {
+        return answerReplyMapper.selectReplyList(answerId);
     }
 
-    public void update(AnswerReplyVO answerReplyVO) {
-        answerReplyMapper.update(answerReplyVO);
+    public Boolean isLike(Long replyId, Long memberId) {
+        Boolean isLike = answerReplyMapper.isLike(replyId, memberId);
+        return isLike != null ? isLike : false;
     }
 
-    public void delete(AnswerReplyVO answerReplyVO) {
-        answerReplyMapper.delete(answerReplyVO);
+    public void update(AnswerReplyDTO answerReplyDTO) {
+        answerReplyMapper.update(answerReplyDTO);
+    }
+
+    public void delete(AnswerReplyDTO answerReplyDTO) {
+        answerReplyMapper.delete(answerReplyDTO);
     }
 
     public List<MemberVO> selectLikeUserList(AnswerReplyVO answerReplyVO) {
         return answerReplyMapper.selectLikeUserList(answerReplyVO);
     }
 
-    public void replyLikeInsert(AnswerReplyVO answerReplyVO) {
-        answerReplyMapper.replyLikeInsert(answerReplyVO);
+    public void replyLikeInsert(AnswerReplyLikeDTO answerReplyLikeDTO) {
+        answerReplyMapper.replyLikeInsert(answerReplyLikeDTO);
     }
 
-    public void replyLikeUpdate(AnswerReplyVO answerReplyVO) {
-        answerReplyMapper.replyLikeUpdate(answerReplyVO);
+    public void replyLikeUpdate(AnswerReplyLikeDTO answerReplyLikeDTO) {
+        answerReplyMapper.replyLikeUpdate(answerReplyLikeDTO);
     }
 
-    public Map<String, Object> isLikeExist(AnswerReplyVO answerReplyVO) {
-        Map<String, Object> result = answerReplyMapper.isLikeExist(answerReplyVO);
+    public Map<String, Object> isLikeExist(AnswerReplyLikeDTO answerReplyLikeDTO) {
+        Map<String, Object> result = answerReplyMapper.isLikeExist(answerReplyLikeDTO);
         return result != null ? result : new HashMap<>();
     }
-    public int selectReplyCount(Long answerId){
+
+    public int selectReplyCount(Long answerId) {
         return answerReplyMapper.selectReplyCount(answerId);
     }
 }

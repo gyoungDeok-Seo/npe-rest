@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,7 +22,6 @@ public class QnaServiceImpl implements QnaService {
         qnaDAO.insertQna(qnaDTO); // QnaDTO를 먼저 저장하여 id를 생성
 
         // QnaDTO에 저장된 id를 가져와서 file과 tag의 questionId 설정
-        System.out.println(qnaDTO);
         // 2. 파일 정보 저장
         List<FileVO> files = qnaDTO.getFiles();
         if (files != null && !files.isEmpty()) {
@@ -42,13 +42,48 @@ public class QnaServiceImpl implements QnaService {
     }
 
     @Override
-    public List<QnaDTO> selectQnaList() {
-        return qnaDAO.selectQnaList();
+    public void update(QnaDTO qnaDTO) {
+        qnaDAO.updateQna(qnaDTO);
+
+        List<FileVO> files = qnaDTO.getFiles();
+        if (files != null && !files.isEmpty()) {
+            for (FileVO file : qnaDTO.getFiles()) {
+                qnaDAO.updateFile(file);
+            }
+        }
+
+        List<TagVO> tags = qnaDTO.getTags();
+        if (tags != null && !tags.isEmpty()) {
+            for (TagVO tag : qnaDTO.getTags()) {
+                qnaDAO.updateTag(tag);
+            }
+        }
     }
 
     @Override
-    public QnaDetailDTO selectDetail(QnaDetailDTO qnaDetailDTO) {
-        return qnaDAO.selectDetail(qnaDetailDTO);
+    public void delete(Long id) {
+        qnaDAO.deleteQna(id);
+        qnaDAO.deleteTag(id);
+    }
+
+    @Override
+    public List<QnaDTO> selectQnaList(List<String> tags, String category, Pagination pagination) {
+        if(tags.get(0).isEmpty()){
+            tags = new ArrayList<String>();
+        }
+        pagination.progress(10);
+        return qnaDAO.selectQnaList(tags, category, pagination);
+    }
+
+    @Override
+    public List<QnaDTO> selectTagQnaList(String tag, Pagination pagination) {
+        pagination.progress(10);
+        return qnaDAO.selectTagQnaList(tag, pagination);
+    }
+
+    @Override
+    public QnaDetailDTO selectQnaDetail(Long id) {
+        return qnaDAO.selectQnaDetail(id);
     }
 
     @Override
@@ -64,6 +99,17 @@ public class QnaServiceImpl implements QnaService {
     @Override
     public List<QnaDTO> selectBestAnswer() {
         return qnaDAO.selectBestAnswer();
+    }
+
+    @Override
+    public void incrementHits(Long id) {
+        qnaDAO.incrementHits(id);
+
+    }
+
+    @Override
+    public int tagQnaListCount(String tag) {
+        return qnaDAO.tagQnaListCount(tag);
     }
 
 }

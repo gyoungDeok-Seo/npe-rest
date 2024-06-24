@@ -1,6 +1,7 @@
 package com.app.nperest.service;
 
 import com.app.nperest.domain.AnswerDTO;
+import com.app.nperest.domain.AnswerLikeDTO;
 import com.app.nperest.domain.AnswerVO;
 import com.app.nperest.domain.MemberVO;
 import com.app.nperest.repository.AnswerDAO;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +23,14 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public List<AnswerDTO> selectList(AnswerDTO answerDTO) {
-        return answerDAO.selectList(answerDTO);
+    public List<AnswerDTO> selectAnswerList(Long id) {
+        return answerDAO.selectAnswerList(id);
+    }
+
+    @Override
+    public Boolean isLike(Long answerId, Long memberId) {
+        Boolean isLike = answerDAO.isLike(answerId, memberId);
+        return isLike != null ? isLike : false;
     }
 
     @Override
@@ -43,18 +49,13 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public boolean answerLike(AnswerVO answerVO) {
-        boolean isLikeExist = !answerDAO.isLikeExist(answerVO).isEmpty();
+    public void answerLike(AnswerLikeDTO answerLikeDTO) {
+        boolean isLikeExist = !answerDAO.isLikeExist(answerLikeDTO).isEmpty();
         if (!isLikeExist) {
-            answerDAO.answerLikeInsert(answerVO);
-            return true; // 답변에 좋아요를 추가했음을 나타냅니다.
+            answerDAO.answerLikeInsert(answerLikeDTO);
         } else {
-            answerDAO.answerLikeUpdate(answerVO);
-            // 데이터베이스에서 갱신된 상태를 가져옵니다.
-            Map<String, Object> likeStatus = answerDAO.isLikeExist(answerVO);
-            Integer statusInteger = (Integer) likeStatus.get("status");
-            boolean statusBoolean = statusInteger != null && statusInteger == 1;
-            return statusBoolean;
+            answerDAO.answerLikeUpdate(answerLikeDTO);
+
         }
     }
 

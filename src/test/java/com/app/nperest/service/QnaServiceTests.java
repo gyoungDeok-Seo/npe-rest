@@ -34,10 +34,10 @@ public class QnaServiceTests {
         file1.setFilePath("파일경로1");
         file1.setQuestionId(3L);
 
-        FileVO file2 = new FileVO();
-        file1.setFileName("파일이름2");
-        file1.setFilePath("파일경로2");
-        file1.setQuestionId(3L);
+        FileVO file2 = new FileVO();  // 올바른 변수명으로 수정
+        file2.setFileName("파일이름2"); // file2 설정 부분 수정
+        file2.setFilePath("파일경로2");
+        file2.setQuestionId(3L);
 
         files.add(file1);
         files.add(file2);
@@ -51,7 +51,7 @@ public class QnaServiceTests {
         tag1.setQuestionId(3L);
 
         TagVO tag2 = new TagVO();
-        tag2.setTagName("태그1");
+        tag2.setTagName("태그2"); // 태그 이름 수정
         tag2.setStatus(true);
         tag2.setQuestionId(3L);
 
@@ -73,4 +73,14 @@ public class QnaServiceTests {
         System.out.println(qnaService.selectTopTen());
     }
 
+    @Test
+    public void selectBestAnswerTest() {
+        System.out.println(qnaService.selectBestAnswer());
+    }
+
+    @Test
+    public void tagQnaListCountTest() {
+        int count = qnaService.tagQnaListCount("react");
+        System.out.println(count);
+    }
 }

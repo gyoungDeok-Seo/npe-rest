@@ -1,11 +1,7 @@
 package com.app.nperest.repository;
 
-import com.app.nperest.domain.AnswerDTO;
-import com.app.nperest.domain.AnswerVO;
-import com.app.nperest.domain.MemberVO;
-import com.app.nperest.domain.QnaDTO;
+import com.app.nperest.domain.*;
 import com.app.nperest.mapper.AnswerMapper;
-import com.app.nperest.mapper.QnaMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -19,11 +15,16 @@ public class AnswerDAO {
     private final AnswerMapper answerMapper;
 
     public void insert(AnswerVO answerVO) {
-        answerMapper.insert(answerVO);
+         answerMapper.insert(answerVO);
     }
 
-    public List<AnswerDTO> selectList(AnswerDTO answerDTO) {
-        return answerMapper.selectList(answerDTO);
+    public List<AnswerDTO> selectAnswerList(Long id) {
+        return answerMapper.selectAnswerList(id);
+    }
+
+    public Boolean isLike(Long answerId, Long memberId) {
+        Boolean isLike = answerMapper.isLike(answerId, memberId);
+        return isLike != null ? isLike : false;
     }
 
     public void update(AnswerVO answerVO) {
@@ -38,16 +39,16 @@ public class AnswerDAO {
         return answerMapper.selectLikeUserList(answerVO);
     }
 
-    public void answerLikeInsert(AnswerVO answerVO) {
-        answerMapper.answerLikeInsert(answerVO);
+    public void answerLikeInsert(AnswerLikeDTO answerLikeDTO) {
+        answerMapper.answerLikeInsert(answerLikeDTO);
     }
 
-    public void answerLikeUpdate(AnswerVO answerVO) {
-        answerMapper.answerLikeUpdate(answerVO);
+    public void answerLikeUpdate(AnswerLikeDTO answerLikeDTO) {
+        answerMapper.answerLikeUpdate(answerLikeDTO);
     }
 
-    public Map<String, Object> isLikeExist(AnswerVO answerVO) {
-        Map<String, Object> result = answerMapper.isLikeExist(answerVO);
+    public Map<String, Object> isLikeExist(AnswerLikeDTO answerLikeDTO) {
+        Map<String, Object> result = answerMapper.isLikeExist(answerLikeDTO);
         return result != null ? result : new HashMap<>();
     }
 

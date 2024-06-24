@@ -7,5 +7,5 @@ import java.util.List;
 
 @Mapper
 public interface FileMapper {
-      public List<FileVO> selectList(FileVO fileVO);
+      public List<FileVO> selectFileList(Long id);
 }

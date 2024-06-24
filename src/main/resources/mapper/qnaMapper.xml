@@ -2,22 +2,56 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.nperest.mapper.QnaMapper">
     <insert id="insertQna">
-        insert INTO tbl_question (question_title, question_content, status, category_id, member_id)
-        VALUES (#{questionTitle}, #{questionContent}, #{status}, #{categoryId}, #{memberId})
+        insert into tbl_question (question_title, question_content, category_id, member_id)
+        values (#{questionTitle}, #{questionContent}, #{categoryId}, #{memberId})
         <selectKey keyProperty="id" resultType="Long">
-            SELECT LAST_INSERT_ID()
+            select LAST_INSERT_ID()
         </selectKey>
     </insert>
 
+    <update id="updateQna">
+        UPDATE tbl_question
+        SET question_title   = #{questionTitle},
+            question_content = #{questionContent},
+            status           = #{status},
+            category_id      = #{categoryId},
+            updated_date     = current_timestamp
+        WHERE id = #{id}
+    </update>
+    <update id="deleteQna">
+        UPDATE tbl_question
+        SET status       = 0,
+            updated_date = current_timestamp
+        WHERE id = #{id}
+    </update>
     <insert id="insertFile">
-        insert INTO tbl_file (file_name, file_path, question_id)
-        VALUES (#{fileName}, #{filePath}, #{questionId})
+        insert into tbl_file (file_name, file_path, question_id)
+        values (#{fileName}, #{filePath}, #{questionId})
     </insert>
-
+    <update id="updateFile">
+        UPDATE tbl_file
+        SET file_name    = #{fileName},
+            file_path    = #{filePath},
+            updated_date = current_timestamp
+        WHERE id = #{id}
+    </update>
     <insert id="insertTag">
-        insert INTO tbl_tag (tag_name, status, question_id)
-        VALUES (#{tagName}, #{status}, #{questionId})
+        insert into tbl_tag (tag_name, status, question_id)
+        values (#{tagName}, #{status}, #{questionId})
     </insert>
+    <update id="updateTag">
+        UPDATE tbl_tag
+        SET tag_name     = #{tagName},
+            status       = #{status},
+            updated_date = current_timestamp
+        WHERE id = #{id}
+    </update>
+    <update id="deleteTag">
+        UPDATE tbl_tag
+        SET status       = 0,
+            updated_date = current_timestamp
+        WHERE question_id = #{questionId}
+    </update>
 
     <select id="selectCategoryList" resultType="CategoryVO">
         select id, category_name, category_value
@@ -53,50 +87,134 @@
         limit 12;
     </select>
 
-    <select id="selectQnaList" resultType="QnaDTO" parameterType="QnaDTO">
-        SELECT q.id,
-               q.question_title,
-               q.question_content,
-               q.status,
-               q.category_id,
-               q.member_id,
-               q.created_date,
-               m.member_name,
-               m.member_position,
-               q.hits,
-               COUNT(DISTINCT a.id) AS answerCnt
-        FROM tbl_question q
-                 LEFT JOIN tbl_member m ON q.member_id = m.id
-                 LEFT JOIN tbl_answer a ON q.id = a.question_id AND a.status = 1
-        WHERE q.status = 1
-          AND m.status = 1
-        GROUP BY q.id, q.question_title, q.question_content, q.status, q.category_id, q.member_id, q.created_date,
-                 m.member_name, m.member_position, q.hits
-        order by q.id desc
+    <select id="selectQnaList" resultType="QnaDTO">
+        select surbquery.id,
+        surbquery.question_title,
+        surbquery.question_content,
+        surbquery.status,
+        surbquery.category_id,
+        surbquery.member_id,
+        surbquery.created_date,
+        surbquery.member_name,
+        surbquery.member_position,
+        surbquery.hits,
+        answerCnt
+        from (
+        select q.id,
+        q.question_title,
+        q.question_content,
+        q.status,
+        q.category_id,
+        q.member_id,
+        q.created_date,
+        m.member_name,
+        m.member_position,
+        q.hits,
+        COUNT(distinct a.id) as answerCnt
+        from tbl_question q
+        join tbl_member m on q.member_id = m.id and m.status = 1
+        left join tbl_answer a on q.id = a.question_id and a.status = 1
+        where q.status = 1
+        and q.category_id = (
+        select id
+        from tbl_category
+        where category_value = #{categoryValue}
+        )
+        group by q.id, q.question_title, q.question_content, q.status, q.category_id, q.member_id, q.created_date,
+        m.member_name, m.member_position, q.hits
+        ) as surbquery
+        <choose>
+            <when test="tags != null and tags.size != 0">
+                join tbl_tag t on surbquery.id = t.question_id
+                <trim prefix="and (" suffixOverrides="OR">
+                    <foreach item="tagName" collection="tags">
+                        t.tag_name = #{tagName} OR
+                    </foreach>
+                </trim>
+                )
+            </when>
+            <otherwise>
+                left join tbl_tag t on surbquery.id = t.question_id
+            </otherwise>
+        </choose>
+        order by surbquery.id desc
+        limit #{pagination.rowCount}
+        offset #{pagination.startRow}
     </select>
 
-
-
-    <select id="selectDetail" resultType="qnaDetailDTO" parameterType="qnaDetailDTO">
-        SELECT q.id,
+    <select id="selectTagQnaList" resultType="QnaDTO">
+       select
+        surbquery.id,
+        surbquery.question_title,
+        surbquery.question_content,
+        surbquery.status,
+        surbquery.category_id,
+        surbquery.member_id,
+        surbquery.created_date,
+        surbquery.member_name,
+        surbquery.member_position,
+        surbquery.hits,
+        surbquery.answerCnt,
+        c.category_name,
+        c.category_value
+    from (
+        select
+            q.id,
+            q.question_title,
+            q.question_content,
+            q.status,
+            q.category_id,
+            q.member_id,
+            q.created_date,
+            m.member_name,
+            m.member_position,
+            q.hits,
+            COUNT(distinct a.id) as answerCnt
+        from tbl_question q
+        join tbl_member m on q.member_id = m.id and m.status = 1
+        left join tbl_answer a on q.id = a.question_id and a.status = 1
+        left join tbl_tag t on q.id = t.question_id
+        where q.status = 1
+        and t.tag_name = #{tag}
+        group by
+            q.id, q.question_title, q.question_content, q.status,
+            q.category_id, q.member_id, q.created_date,
+            m.member_name, m.member_position, q.hits
+    ) as surbquery
+    join tbl_category c on surbquery.category_id = c.id
+    order by surbquery.id desc
+    limit #{pagination.rowCount}
+    offset #{pagination.startRow}
+</select>
+ <select id="tagQnaListCount" resultType="int">
+     SELECT COUNT(*) AS total_count
+     FROM (SELECT q.id
+           FROM tbl_question q
+                    JOIN tbl_member m ON q.member_id = m.id AND m.status = 1
+                    LEFT JOIN tbl_answer a ON q.id = a.question_id AND a.status = 1
+                    LEFT JOIN tbl_tag t ON q.id = t.question_id
+           WHERE q.status = 1
+             AND t.tag_name = #{tag}
+           GROUP BY q.id) AS count_query;
+ </select>
+    <select id="selectQnaDetail" resultType="qnaDetailDTO">
+        select q.id,
                q.question_title,
                q.question_content,
                q.status,
                q.category_id,
                q.member_id,
+               q.hits,
                q.created_date,
                q.updated_date,
                c.category_name,
-               c.category_value,
-               GROUP_CONCAT(t.tag_name SEPARATOR ',') AS tags
-        FROM tbl_question q
-                 LEFT JOIN
-             tbl_category c ON q.category_id = c.id
-                 LEFT JOIN
-             tbl_tag t ON q.id = t.question_id
-        WHERE q.status = 1
-          AND q.id = #{id}
-        GROUP BY q.id,
+               c.category_value
+        from tbl_question q
+                 left join
+             tbl_category c on q.category_id = c.id
+        where q.status = 1
+          and q.id = #{id}
+        group by q.id,
                  q.question_title,
                  q.question_content,
                  q.status,
@@ -107,5 +225,11 @@
                  c.category_name,
                  c.category_value
     </select>
+
+    <update id="incrementHits">
+        update tbl_question
+        set hits = hits + 1
+        where id = #{id}
+    </update>
 
 </mapper>

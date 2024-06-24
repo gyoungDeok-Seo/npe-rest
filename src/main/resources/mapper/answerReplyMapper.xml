@@ -1,37 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.nperest.mapper.AnswerReplyMapper">
-    <insert id="insert" parameterType="AnswerReplyVO">
+    <insert id="insert" parameterType="AnswerReplyDTO">
         INSERT INTO tbl_answer_reply (replay_content, member_id, answer_id)
         VALUES (#{replayContent}, #{memberId}, #{answerId})
     </insert>
 
-    <select id="selectList" resultType="AnswerReplyDTO" parameterType="AnswerReplyDTO">
-        SELECT tbla.id,
-               tbla.replay_content,
-               tbla.status,
-               tbla.member_id,
-               tbla.answer_id,
-               tbla.created_date,
-               tbla.updated_date,
-               tblm.member_name,
-               tblm.kakao_profile_url,
-               tblm.member_position,
-               (SELECT COUNT(*) FROM tbl_answer_reply_like WHERE reply_id = tbla.id AND status = 1) AS likeCnt,
+    <select id="selectReplyList" resultType="AnswerReplyDTO" parameterType="AnswerReplyDTO">
+        SELECT a.id,
+               a.replay_content,
+               a.status,
+               a.member_id,
+               a.answer_id,
+               a.created_date,
+               a.updated_date,
+               m.member_name,
+               m.kakao_profile_url,
+               m.member_position,
+               (SELECT COUNT(*) FROM tbl_answer_reply_like WHERE reply_id = a.id AND status = 1) AS likeCnt,
                CASE
                    WHEN EXISTS (SELECT 1
                                 FROM tbl_answer_reply_like
-                                WHERE answer_id = tbla.id
+                                WHERE answer_id = a.id
                                   AND status = 1
                                   AND member_id = 3) THEN TRUE
                    ELSE FALSE
-                   END                                                                              AS memberLiked
-        FROM tbl_answer_reply tbla
-                 LEFT JOIN tbl_member tblm ON tbla.member_id = tblm.id
-        WHERE tbla.answer_id = #{answerId}
-          AND tbla.status = 1
-          AND tblm.status = 1
-        ORDER BY tbla.created_date DESC
+                   END                                                                           AS memberLiked
+        FROM tbl_answer_reply a
+                 LEFT JOIN tbl_member m ON a.member_id = m.id
+        WHERE a.answer_id = #{answerId}
+          AND a.status = 1
+          AND m.status = 1
+        ORDER BY a.created_date DESC
+    </select>
+
+    <select id="isLike" resultType="boolean">
+        select COALESCE(status, 0) as status
+        from tbl_answer_reply_like
+        where reply_id = #{replyId} and member_id = #{memberId}
     </select>
 
     <update id="update" parameterType="AnswerReplyVO">
@@ -66,12 +72,12 @@
           AND tblm.status = 1
         ORDER BY created_date DESC
     </select>
-    <insert id="replyLikeInsert" parameterType="AnswerReplyVO">
+    <insert id="replyLikeInsert" >
         INSERT INTO tbl_answer_reply_like (created_date, updated_date, member_id, reply_id)
         VALUES (now(), now(), #{memberId}, #{id})
     </insert>
 
-    <update id="replyLikeUpdate" parameterType="AnswerReplyVO">
+    <update id="replyLikeUpdate" >
         UPDATE tbl_answer_reply_like
         SET updated_date = now(),
             status       = IF(status = 1, 0, 1)
