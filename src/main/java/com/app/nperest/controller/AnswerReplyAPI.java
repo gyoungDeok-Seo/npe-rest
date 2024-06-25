@@ -80,9 +80,8 @@ public class AnswerReplyAPI {
     }
 
     @PostMapping("/create-profanity")
-    public void insertProfanity(ReplyAi replyAi) {
-        System.out.println(replyAi);
-//        answerReplyService.insertProfanity(replyAi);
+    public void insertProfanity(@RequestBody ReplyAi replyAi) {
+        answerReplyService.insertProfanity(replyAi);
     }
 
     @DeleteMapping("/hard-delete")
