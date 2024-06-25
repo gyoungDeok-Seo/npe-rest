@@ -71,5 +71,22 @@ public class AnswerReplyServiceImpl implements AnswerReplyService {
     public void insertProfanity(ReplyAi replyAi) {
         answerReplyDAO.insertProfanity(replyAi);
     }
+
+    @Override
+    public void replyHardDelete(Long id) {
+        answerReplyDAO.replyHardDelete(id);
+    }
+
+    @Override
+    public void replyLikeHardDelete(Long id) {
+        answerReplyDAO.replyLikeHardDelete(id);
+    }
+
+    @Override
+    public void insertProfan(String comment, boolean target) {
+        answerReplyDAO.insertProfan(comment, target);
+    }
 }
+
+
 

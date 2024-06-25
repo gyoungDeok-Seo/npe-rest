@@ -83,4 +83,11 @@ public class AnswerReplyAPI {
     public void insertProfanity(@RequestBody ReplyAi replyAi) {
         answerReplyService.insertProfanity(replyAi);
     }
+
+    @DeleteMapping("/hard-delete")
+    public void replyHardDelete(@RequestBody AnswerReplyDTO answerReplyDTO) {
+        answerReplyService.insertProfan(answerReplyDTO.getReplayContent(), true);
+        answerReplyService.replyLikeHardDelete(answerReplyDTO.getId());
+        answerReplyService.replyHardDelete(answerReplyDTO.getId());
+    }
 }

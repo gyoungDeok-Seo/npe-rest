@@ -56,7 +56,19 @@ public class AnswerReplyDAO {
         return answerReplyMapper.selectReplyCount(answerId);
     }
 
-    public void insertProfanity(ReplyAi replyAi){
+    public void insertProfanity(ReplyAi replyAi) {
         answerReplyMapper.insertProfanity(replyAi);
+    }
+
+    public void replyHardDelete(Long id) {
+        answerReplyMapper.replyHardDelete(id);
+    }
+
+    public void replyLikeHardDelete(Long id) {
+        answerReplyMapper.replyLikeHardDelete(id);
+    }
+
+    public void insertProfan(String comment, boolean target) {
+        answerReplyMapper.insertProfan(comment, target);
     }
 }

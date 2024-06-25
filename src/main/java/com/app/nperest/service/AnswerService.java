@@ -21,4 +21,14 @@ public interface AnswerService {
     public List<MemberVO> selectLikeUserList(AnswerVO answerVO);
 
     public void answerLike(AnswerLikeDTO answerLikeDTO);
+
+    public void answerHardDelete(Long id);
+
+    public void answerLikeHardDelete(Long id);
+
+    public void replyHardDelete(Long id);
+
+    public void replyLikeHardDelete(Long id);
+
+    public void insertProfanity(String comment, boolean target);
 }

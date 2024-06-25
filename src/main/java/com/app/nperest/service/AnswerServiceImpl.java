@@ -59,4 +59,28 @@ public class AnswerServiceImpl implements AnswerService {
         }
     }
 
+    @Override
+    public void answerHardDelete(Long id) {
+        answerDAO.answerHardDelete(id);
+    }
+
+    @Override
+    public void answerLikeHardDelete(Long id) {
+        answerDAO.answerLikeHardDelete(id);
+    }
+
+    @Override
+    public void replyHardDelete(Long id) {
+        answerDAO.replyHardDelete(id);
+    }
+
+    @Override
+    public void replyLikeHardDelete(Long id) {
+        answerDAO.replyLikeHardDelete(id);
+    }
+
+    @Override
+    public void insertProfanity(String comment, boolean target) {
+        answerDAO.insertProfanity(comment, target);
+    }
 }
