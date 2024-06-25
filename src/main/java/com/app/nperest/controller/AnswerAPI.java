@@ -84,4 +84,13 @@ public class AnswerAPI {
         }
         return list;
     }
+
+    @DeleteMapping("/hard-delete")
+    public void answerHardDelete(@RequestBody AnswerDTO answerDTO) {
+        answerService.insertProfanity(answerDTO.getAnswerContent(), true);
+        answerService.replyLikeHardDelete(answerDTO.getId());
+        answerService.replyHardDelete(answerDTO.getId());
+        answerService.answerLikeHardDelete(answerDTO.getId());
+        answerService.answerHardDelete(answerDTO.getId());
+    }
 }

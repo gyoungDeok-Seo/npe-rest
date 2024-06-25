@@ -28,4 +28,14 @@ public interface AnswerMapper {
     public void answerLikeUpdate(AnswerLikeDTO answerLikeDTO);
 
     public Map<String, Object> isLikeExist(AnswerLikeDTO answerLikeDTO);
+
+    public void answerHardDelete(Long id);
+
+    public void answerLikeHardDelete(Long id);
+
+    public void replyHardDelete(Long id);
+
+    public void replyLikeHardDelete(Long id);
+
+    public void insertProfanity(String comment, boolean target);
 }

@@ -22,4 +22,10 @@ public interface AnswerReplyService {
     public int selectReplyCount(Long answerId);
 
     public void insertProfanity(ReplyAi replyAi);
+
+    public void replyHardDelete(Long id);
+
+    public void replyLikeHardDelete(Long id);
+
+    public void insertProfan(String comment, boolean target);
 }

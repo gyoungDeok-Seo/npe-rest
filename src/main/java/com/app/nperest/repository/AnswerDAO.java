@@ -15,7 +15,7 @@ public class AnswerDAO {
     private final AnswerMapper answerMapper;
 
     public void insert(AnswerVO answerVO) {
-         answerMapper.insert(answerVO);
+        answerMapper.insert(answerVO);
     }
 
     public List<AnswerDTO> selectAnswerList(Long id) {
@@ -52,4 +52,23 @@ public class AnswerDAO {
         return result != null ? result : new HashMap<>();
     }
 
+    public void answerHardDelete(Long id) {
+        answerMapper.answerHardDelete(id);
+    }
+
+    public void answerLikeHardDelete(Long id) {
+        answerMapper.answerLikeHardDelete(id);
+    }
+
+    public void replyHardDelete(Long id) {
+        answerMapper.replyHardDelete(id);
+    }
+
+    public void replyLikeHardDelete(Long id) {
+        answerMapper.replyLikeHardDelete(id);
+    }
+
+    public void insertProfanity(String comment, boolean target) {
+        answerMapper.insertProfanity(comment, target);
+    }
 }

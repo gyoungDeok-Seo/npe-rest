@@ -37,7 +37,8 @@
     <select id="isLike" resultType="boolean">
         select COALESCE(status, 0) as status
         from tbl_answer_reply_like
-        where reply_id = #{replyId} and member_id = #{memberId}
+        where reply_id = #{replyId}
+          and member_id = #{memberId}
     </select>
 
     <update id="update" parameterType="AnswerReplyVO">
@@ -72,12 +73,12 @@
           AND tblm.status = 1
         ORDER BY created_date DESC
     </select>
-    <insert id="replyLikeInsert" >
+    <insert id="replyLikeInsert">
         INSERT INTO tbl_answer_reply_like (created_date, updated_date, member_id, reply_id)
         VALUES (now(), now(), #{memberId}, #{id})
     </insert>
 
-    <update id="replyLikeUpdate" >
+    <update id="replyLikeUpdate">
         UPDATE tbl_answer_reply_like
         SET updated_date = now(),
             status       = IF(status = 1, 0, 1)
@@ -98,10 +99,24 @@
         where answer_id = #{answerId}
           and status = 1
     </select>
-
     <insert id="insertProfanity">
         insert into tbl_reply_ai (comment, target)
         values (#{comment}, #{target})
     </insert>
 
+    <delete id="replyHardDelete">
+        DELETE
+        FROM tbl_answer_reply
+        WHERE id = #{id};
+    </delete>
+    <delete id="replyLikeHardDelete">
+        DELETE
+        FROM tbl_answer_reply_like
+        WHERE reply_id = #{id};
+    </delete>
+
+    <insert id="insertProfan">
+        insert into tbl_reply_ai (comment, target)
+        values (#{comment}, #{target})
+    </insert>
 </mapper>
